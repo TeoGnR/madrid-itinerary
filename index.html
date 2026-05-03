@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Madrid 16–18 Maggio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0c0a;
+    --surface: #1a1714;
+    --surface2: #252019;
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --red: #c94c4c;
+    --cream: #f0e8d8;
+    --muted: #7a7060;
+    --text: #e8dcc8;
+    --done: #3a3830;
+    --done-text: #5a5448;
+    --border: #2e2820;
+    --border-item: #1e1c18;
+    --checkbox-border: #3a3830;
+    --stats-bg: rgba(14,12,10,0.96);
+    --header-glow: rgba(201,168,76,0.12);
+    --highlight-bg: rgba(201,168,76,0.06);
+    --highlight-border: rgba(201,168,76,0.18);
+    --warn-bg: rgba(201,76,76,0.07);
+    --warn-border: rgba(201,76,76,0.25);
+    --warn-text: #d49090;
+    --warn-title: #e07070;
+    --opts-bg: var(--surface);
+    --opts-border: var(--gold);
+    --tag-opt-bg: rgba(201,168,76,0.12);
+    --tag-book-bg: rgba(201,76,76,0.12);
+    --tag-book-color: #e07070;
+    --tag-book-border: rgba(201,76,76,0.3);
+  }
+
+  html.light {
+    --bg: #f5f0e8;
+    --surface: #ede7d9;
+    --surface2: #e0d8c8;
+    --gold: #a07828;
+    --gold-light: #c09040;
+    --red: #b03030;
+    --cream: #2a2018;
+    --muted: #8a7a60;
+    --text: #3a2e1e;
+    --done: #d0c8b0;
+    --done-text: #a09080;
+    --border: #d8ceb8;
+    --border-item: #e0d8c8;
+    --checkbox-border: #c0b090;
+    --stats-bg: rgba(245,240,232,0.96);
+    --header-glow: rgba(160,120,40,0.10);
+    --highlight-bg: rgba(160,120,40,0.07);
+    --highlight-border: rgba(160,120,40,0.22);
+    --warn-bg: rgba(176,48,48,0.06);
+    --warn-border: rgba(176,48,48,0.22);
+    --warn-text: #904040;
+    --warn-title: #b03030;
+    --opts-bg: #ede7d9;
+    --tag-opt-bg: rgba(160,120,40,0.12);
+    --tag-book-bg: rgba(176,48,48,0.10);
+    --tag-book-color: #a03030;
+    --tag-book-border: rgba(176,48,48,0.28);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    padding: 0 0 80px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* HEADER */
+  header {
+    position: relative;
+    overflow: hidden;
+    padding: 60px 24px 48px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, var(--header-glow) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-flag {
+    font-size: 2rem;
+    margin-bottom: 12px;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 8vw, 4rem);
+    font-weight: 700;
+    color: var(--cream);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    animation: fadeDown 0.7s ease 0.1s both;
+  }
+
+  .subtitle {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    color: var(--gold);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    animation: fadeDown 0.7s ease 0.2s both;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    padding: 20px 24px 0;
+    max-width: 680px;
+    margin: 0 auto;
+    animation: fadeDown 0.7s ease 0.3s both;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 8px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .progress-bar {
+    height: 3px;
+    background: var(--surface2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 2px;
+    transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* DAY NAVIGATION */
+  .day-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 28px 24px 8px;
+    animation: fadeDown 0.7s ease 0.35s both;
+  }
+
+  .day-btn {
+    background: var(--surface);
+    border: 1px solid #2e2820;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 9px 20px;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .day-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .day-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #0e0c0a;
+    font-weight: 500;
+  }
+
+  /* MAIN CONTENT */
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  /* DAY SECTION */
+  .day-section {
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .day-section.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .day-header {
+    padding: 28px 0 16px;
+    border-bottom: 1px solid #2e2820;
+    margin-bottom: 6px;
+  }
+
+  .day-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.6rem;
+    color: var(--cream);
+    font-weight: 400;
+  }
+
+  .day-date {
+    font-size: 0.78rem;
+    color: var(--gold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  /* ITEMS */
+  .item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid #1e1c18;
+    cursor: pointer;
+    transition: background 0.2s;
+    border-radius: 6px;
+    padding-left: 8px;
+    padding-right: 8px;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+  }
+
+  .item:hover {
+    background: var(--surface);
+  }
+
+  .item.done {
+    opacity: 0.45;
+  }
+
+  .item.done .item-title {
+    text-decoration: line-through;
+    color: var(--done-text);
+  }
+
+  .item.done .item-time {
+    color: var(--done-text);
+  }
+
+  .item.highlight {
+    background: rgba(201,168,76,0.06);
+    border-color: rgba(201,168,76,0.18);
+  }
+
+  .item.highlight .item-title {
+    color: var(--gold-light);
+  }
+
+  /* Checkbox */
+  .checkbox {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid #3a3830;
+    border-radius: 50%;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .item.done .checkbox {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .checkbox-inner {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--bg);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .item.done .checkbox-inner {
+    opacity: 1;
+  }
+
+  .item-body {
+    flex: 1;
+  }
+
+  .item-time {
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  .item-title {
+    font-size: 0.97rem;
+    color: var(--text);
+    line-height: 1.45;
+    font-weight: 400;
+  }
+
+  .item-note {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.4;
+    font-style: italic;
+  }
+
+  /* Special tag */
+  .tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .tag-opt {
+    background: rgba(201,168,76,0.12);
+    color: var(--gold);
+    border: 1px solid rgba(201,168,76,0.3);
+  }
+
+  .tag-book {
+    background: rgba(201,76,76,0.12);
+    color: #e07070;
+    border: 1px solid rgba(201,76,76,0.3);
+  }
+
+  /* OPTIONS EXPANDER */
+  .options-toggle {
+    font-size: 0.78rem;
+    color: var(--gold);
+    cursor: pointer;
+    margin-top: 5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    letter-spacing: 0.04em;
+    user-select: none;
+  }
+
+  .options-toggle svg {
+    transition: transform 0.2s;
+  }
+
+  .options-toggle.open svg {
+    transform: rotate(180deg);
+  }
+
+  .options-list {
+    display: none;
+    margin-top: 8px;
+    padding: 10px 12px;
+    background: var(--surface);
+    border-left: 2px solid var(--gold);
+    border-radius: 0 6px 6px 0;
+    font-size: 0.84rem;
+    color: var(--cream);
+    line-height: 1.7;
+  }
+
+  .options-list.open {
+    display: block;
+    animation: fadeIn 0.2s ease;
+  }
+
+  /* WARNING BOX */
+  .warning-box {
+    margin: 24px 8px;
+    padding: 16px 18px;
+    background: rgba(201,76,76,0.07);
+    border: 1px solid rgba(201,76,76,0.25);
+    border-radius: 8px;
+    font-size: 0.84rem;
+    color: #d49090;
+    line-height: 1.55;
+  }
+
+  .warning-box strong {
+    color: #e07070;
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+
+  /* RESET + STATS */
+  .stats-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(14,12,10,0.96);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid #2e2820;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+    gap: 12px;
+  }
+
+  .stats-text {
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+
+  .stats-text span {
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .reset-btn {
+    background: transparent;
+    border: 1px solid #2e2820;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 7px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .reset-btn:hover {
+    border-color: var(--red);
+    color: var(--red);
+  }
+
+  /* Separator */
+  .sep {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #2e2820 30%, #2e2820 70%, transparent);
+    margin: 4px 0;
+  }
+
+  /* THEME TOGGLE */
+  .theme-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 200;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    padding: 7px 14px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: all 0.25s ease;
+    backdrop-filter: blur(8px);
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .theme-toggle .theme-icon {
+    font-size: 0.9rem;
+    line-height: 1;
+  }
+
+  @media (max-width: 480px) {
+    h1 { font-size: 2.2rem; }
+    .day-btn { padding: 8px 14px; font-size: 0.75rem; }
+    .theme-toggle { top: 12px; right: 12px; padding: 6px 11px; }
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">
+  <span class="theme-icon" id="theme-icon">☀️</span>
+  <span id="theme-label">Chiaro</span>
+</button>
+
+<header>
+  <div class="header-flag">🇪🇸</div>
+  <h1>Madrid</h1>
+  <p class="subtitle">16 – 18 Maggio 2025</p>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span>Progresso viaggio</span>
+    <span id="prog-text">0 / 0</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+</div>
+
+<div class="day-nav">
+  <button class="day-btn active" onclick="switchDay('sab', this)">Sab 16</button>
+  <button class="day-btn" onclick="switchDay('dom', this)">Dom 17</button>
+  <button class="day-btn" onclick="switchDay('lun', this)">Lun 18</button>
+</div>
+
+<div class="container">
+
+  <!-- SABATO -->
+  <div class="day-section active" id="day-sab">
+    <div class="day-header">
+      <div class="day-title">Sabato</div>
+      <div class="day-date">16 Maggio</div>
+    </div>
+
+    <div class="item" data-id="s1" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">03:00</div>
+        <div class="item-title">🚗 Partenza da Tregnago</div>
+      </div>
+    </div>
+
+    <div class="item highlight" data-id="s2" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">06:00</div>
+        <div class="item-title">✈️ Volo VCE → MAD</div>
+        <div class="item-note">W46729 — Venezia Tessera</div>
+      </div>
+    </div>
+
+    <div class="item" data-id="s3" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">08:40</div>
+        <div class="item-title">🛬 Atterraggio Barajas</div>
+      </div>
+    </div>
+
+    <div class="item" data-id="s4" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">09:15</div>
+        <div class="item-title">🚇 Metro Línea 8 verso centro</div>
+        <div class="item-note">~€5 a testa</div>
+      </div>
+    </div>
+
+    <div class="item" data-id="s5" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">09:30</div>
+        <div class="item-title">🏠 Deposito zaini in alloggio + caffè</div>
+      </div>
+    </div>
+
+    <div class="item" data-id="s6" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">10:00</div>
+        <div class="item-title">🏛️ Puerta del Sol</div>
+      </div>
+    </div>
+
+    <div class="item" data-id="s7" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">10:20</div>
+        <div class="item-title">🏟️ Plaza Mayor</div>
+      </div>
+    </div>
+
+    <div class="item" data-id="s8" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">11:00</div>
+        <div class="item-title">🥩 Mercado de San Miguel — aperitivo / brunch</div>
+      </div>
+    </div>
+
+    <div class="item" data-id="s9" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">13:00</div>
+        <div class="item-title">🍽️ Pranzo in zona</div>
+      </div>
+    </div>
+
+    <div class="item" data-id="s10" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">14:30</div>
+        <div class="item-title">🏠 Rientro alloggio</div>
+      </div>
+    </div>
+
+    <div class="item" data-id="s11" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">15:00</div>
+        <div class="item-title">✅ Check-in → 🛌 Riposo</div>
+        <div class="item-note">Sveglia alle 19:00. Organizzare i turni doccia prima di dormire.</div>
+      </div>
+    </div>
+
+    <div class="item" data-id="s12" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">19:00</div>
+        <div class="item-title">🚿 Docce + preparazione</div>
+      </div>
+    </div>
+
+    <div class="item" data-id="s13" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">21:00</div>
+        <div class="item-title">🍽️ Cena</div>
+        <div class="options-toggle" onclick="toggleOpts(event,'opts-s13')">
+          Opzioni ristoranti
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="options-list" id="opts-s13">
+          Inclán Brutal Bar · Casa Alberto · La Musa Latina<br>
+          Taberna Almería · Los Galayos · La Finca de Susana · Casa González
+        </div>
+      </div>
+    </div>
+
+    <div class="item" data-id="s14" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">22:30</div>
+        <div class="item-title">🍹 Pre-serata</div>
+        <div class="item-note">Plaza de Santa Ana (davanti a casa) oppure taxi verso Malasaña / Chueca</div>
+      </div>
+    </div>
+
+    <div class="item highlight" data-id="s15" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">00:30</div>
+        <div class="item-title">🎉 Teatro Kapital</div>
+        <div class="item-note">Calle de Atocha 125 — 15 min a piedi o 5 min in taxi</div>
+      </div>
+    </div>
+
+    <div class="item" data-id="s16" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">03:30 – 04:30</div>
+        <div class="item-title">🏠 Rientro</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOMENICA -->
+  <div class="day-section" id="day-dom">
+    <div class="day-header">
+      <div class="day-title">Domenica</div>
+      <div class="day-date">17 Maggio</div>
+    </div>
+
+    <div class="item" data-id="d1" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">12:00 – 13:00</div>
+        <div class="item-title">☀️ Sveglia</div>
+      </div>
+    </div>
+
+    <div class="item" data-id="d2" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">13:00</div>
+        <div class="item-title">🍳 Brunch</div>
+        <div class="options-toggle" onclick="toggleOpts(event,'opts-d2')">
+          Opzioni brunch
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="options-list" id="opts-d2">
+          Superchulo Gran Vía · EatMyTrip Malasaña · Le Pralin
+        </div>
+      </div>
+    </div>
+
+    <div class="item" data-id="d3" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">15:00</div>
+        <div class="item-title">🌿 Parque del Retiro</div>
+        <div class="item-note">Taxi o metro — ~15 min</div>
+      </div>
+    </div>
+
+    <div class="item highlight" data-id="d4" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">15:30</div>
+        <div class="item-title">🚣 Barca sul lago <span class="tag tag-book">Prenotare</span></div>
+        <div class="item-note">2 barche × 2 slot da 45 min — ~€8 a barca. Prenotare la mattina stessa su Madrid Móvil.</div>
+      </div>
+    </div>
+
+    <div class="item" data-id="d5" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">16:30</div>
+        <div class="item-title">🏛️ Palacio de Cristal + passeggiata nel parco</div>
+      </div>
+    </div>
+
+    <div class="item highlight" data-id="d6" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">18:00</div>
+        <div class="item-title">🌅 Rooftop Azotea del Círculo de Bellas Artes <span class="tag tag-book">Prenotare</span></div>
+        <div class="item-note">~€6 ingresso. Prenotare il tavolo in anticipo.</div>
+      </div>
+    </div>
+
+    <div class="item" data-id="d7" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">20:30</div>
+        <div class="item-title">🍽️ Cena zona Gran Vía / Chueca</div>
+        <div class="options-toggle" onclick="toggleOpts(event,'opts-d7')">
+          Opzioni ristoranti
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="options-list" id="opts-d7">
+          Vinitus Gran Vía · Diurno Chueca · La Cerda de Chueca · Fratelli d'Italia
+        </div>
+      </div>
+    </div>
+
+    <div class="item" data-id="d8" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">Dopo cena</div>
+        <div class="item-title">🌃 Serata libera</div>
+        <div class="item-note">Plaza de Santa Ana / bar Malasaña-Chueca — o rientro</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LUNEDI -->
+  <div class="day-section" id="day-lun">
+    <div class="day-header">
+      <div class="day-title">Lunedì</div>
+      <div class="day-date">18 Maggio</div>
+    </div>
+
+    <div class="item" data-id="l1" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">08:30</div>
+        <div class="item-title">☕ Colazione</div>
+      </div>
+    </div>
+
+    <div class="item highlight" data-id="l2" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">10:00</div>
+        <div class="item-title">👑 Palacio Real <span class="tag tag-book">Prenotare online</span></div>
+        <div class="item-note">~1h 30 min. Acquistare i biglietti online in anticipo.</div>
+      </div>
+    </div>
+
+    <div class="item" data-id="l3" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">11:30</div>
+        <div class="item-title">✅ Check-out</div>
+        <div class="item-note">Lasciare bagagli in alloggio o deposito (Stasher / LuggageHero)</div>
+      </div>
+    </div>
+
+    <div class="item" data-id="l4" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">12:00</div>
+        <div class="item-title">⚽ Tour Bernabéu <span class="tag tag-opt">Opzionale</span></div>
+        <div class="item-note">Taxi ~20 min, durata ~1h 30 min</div>
+      </div>
+    </div>
+
+    <div class="item" data-id="l5" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">14:00</div>
+        <div class="item-title">🥙 Pranzo veloce + recupero bagagli</div>
+      </div>
+    </div>
+
+    <div class="item" data-id="l6" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">14:30</div>
+        <div class="item-title">🚕 Taxi verso Barajas T1</div>
+        <div class="item-note">~35-40 min — ~€35-40</div>
+      </div>
+    </div>
+
+    <div class="item highlight" data-id="l7" onclick="toggle(this)">
+      <div class="checkbox"><div class="checkbox-inner"></div></div>
+      <div class="item-body">
+        <div class="item-time">16:55</div>
+        <div class="item-title">✈️ Volo MAD → VCE</div>
+        <div class="item-note">FR1206 — Ryanair</div>
+      </div>
+    </div>
+
+    <div class="warning-box">
+      <strong>⚠️ Nota Lunedì</strong>
+      Palacio Real e Bernabéu insieme sono fattibili ma stretti. Se volete stare tranquilli, scegliete uno dei due — il Palacio Real è più centrale e più "Madrid".
+    </div>
+  </div>
+
+</div><!-- end container -->
+
+<div class="stats-bar">
+  <div class="stats-text">✓ <span id="done-count">0</span> attività completate</div>
+  <div id="sync-status" style="font-size:0.75rem;color:var(--muted);letter-spacing:0.04em">○ Caricamento…</div>
+  <button class="reset-btn" onclick="resetAll()">Reset</button>
+</div>
+
+<script>
+  // ── SUPABASE CONFIG ──────────────────────────────────────────────
+  const SB_URL = 'https://wjkpmlldjwrpmtjezvsy.supabase.co';
+  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indqa3BtbGxkandycG10amV6dnN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NzUxNzcsImV4cCI6MjA5MzE1MTE3N30.2_58rgeiNH-dz_6CHf6qBGAC94q82hLqJDQ6S-61AAQ';
+  const HEADERS = { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY };
+
+  const THEME_KEY_STORE = 'madrid_theme_v1';
+
+  // Safe localStorage wrapper (fallback in-memory per Safari privato)
+  const store = (function() {
+    let mem = {};
+    let ok = true;
+    try { localStorage.setItem('_t','1'); localStorage.removeItem('_t'); } catch(e) { ok = false; }
+    return {
+      get: function(k) {
+        if (ok) { try { return localStorage.getItem(k); } catch(e) {} }
+        return mem[k] !== undefined ? mem[k] : null;
+      },
+      set: function(k, v) {
+        if (ok) { try { localStorage.setItem(k, v); return; } catch(e) {} }
+        mem[k] = v;
+      }
+    };
+  })();
+
+  let done = []; // array degli item_id spuntati
+
+  // ── INDICATORE SYNC ─────────────────────────────────────────────
+  function setSyncStatus(state) {
+    const el = document.getElementById('sync-status');
+    if (!el) return;
+    const map = {
+      ok:      { icon: '●', label: 'Sincronizzato', color: '#4caf7a' },
+      loading: { icon: '○', label: 'Sincronizzazione…', color: '#c9a84c' },
+      error:   { icon: '●', label: 'Offline', color: '#c94c4c' }
+    };
+    const s = map[state] || map.ok;
+    el.innerHTML = '<span style="color:' + s.color + ';font-size:0.7rem">' + s.icon + '</span> ' + s.label;
+  }
+
+  // ── CARICA DA SUPABASE ───────────────────────────────────────────
+  async function loadFromSupabase() {
+    setSyncStatus('loading');
+    try {
+      const res = await fetch(SB_URL + '/rest/v1/checklist?select=item_id,checked', { headers: HEADERS });
+      if (!res.ok) throw new Error();
+      const rows = await res.json();
+      done = rows.filter(r => r.checked).map(r => r.item_id);
+      setSyncStatus('ok');
+    } catch(e) {
+      setSyncStatus('error');
+    }
+    applyState();
+  }
+
+  // ── SALVA SU SUPABASE ────────────────────────────────────────────
+  async function saveToSupabase(itemId, checked) {
+    setSyncStatus('loading');
+    try {
+      const res = await fetch(SB_URL + '/rest/v1/checklist', {
+        method: 'POST',
+        headers: { ...HEADERS, 'Prefer': 'resolution=merge-duplicates' },
+        body: JSON.stringify({ item_id: itemId, checked: checked, updated_at: new Date().toISOString() })
+      });
+      if (!res.ok) throw new Error();
+      setSyncStatus('ok');
+    } catch(e) {
+      setSyncStatus('error');
+    }
+  }
+
+  function applyState() {
+    document.querySelectorAll('.item').forEach(el => {
+      const id = el.dataset.id;
+      if (done.includes(id)) el.classList.add('done');
+      else el.classList.remove('done');
+    });
+    updateStats();
+  }
+
+  function toggle(el) {
+    const id = el.dataset.id;
+    const isNowChecked = !done.includes(id);
+    if (isNowChecked) done.push(id);
+    else done = done.filter(d => d !== id);
+    applyState();
+    saveToSupabase(id, isNowChecked);
+  }
+
+  function toggleOpts(e, id) {
+    e.stopPropagation();
+    const list = document.getElementById(id);
+    const toggle = e.currentTarget;
+    list.classList.toggle('open');
+    toggle.classList.toggle('open');
+  }
+
+  function switchDay(day, btn) {
+    document.querySelectorAll('.day-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('day-' + day).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function updateStats() {
+    const total = document.querySelectorAll('.item').length;
+    const doneCount = done.filter(id =>
+      document.querySelector('[data-id="' + id + '"]')
+    ).length;
+    document.getElementById('done-count').textContent = doneCount;
+    document.getElementById('prog-text').textContent = doneCount + ' / ' + total;
+    document.getElementById('prog-fill').style.width = total ? (doneCount / total * 100) + '%' : '0%';
+  }
+
+  async function resetAll() {
+    if (!confirm('Resettare tutte le attività per tutti?')) return;
+    setSyncStatus('loading');
+    try {
+      // Resetta tutti gli item su Supabase
+      const allIds = Array.from(document.querySelectorAll('.item')).map(el => el.dataset.id);
+      await fetch(SB_URL + '/rest/v1/checklist', {
+        method: 'POST',
+        headers: { ...HEADERS, 'Prefer': 'resolution=merge-duplicates' },
+        body: JSON.stringify(allIds.map(id => ({ item_id: id, checked: false, updated_at: new Date().toISOString() })))
+      });
+      done = [];
+      setSyncStatus('ok');
+    } catch(e) {
+      done = [];
+      setSyncStatus('error');
+    }
+    applyState();
+  }
+
+  // ── TEMA ────────────────────────────────────────────────────────
+  function applyTheme(theme) {
+    const isLight = theme === 'light';
+    document.documentElement.classList.toggle('light', isLight);
+    document.getElementById('theme-icon').textContent = isLight ? '🌙' : '☀️';
+    document.getElementById('theme-label').textContent = isLight ? 'Scuro' : 'Chiaro';
+  }
+
+  function toggleTheme() {
+    const isLight = document.documentElement.classList.contains('light');
+    const next = isLight ? 'dark' : 'light';
+    store.set(THEME_KEY_STORE, next);
+    applyTheme(next);
+  }
+
+  // ── INIT ─────────────────────────────────────────────────────────
+  (function() {
+    const saved = store.get(THEME_KEY_STORE);
+    if (saved) applyTheme(saved);
+  })();
+
+  loadFromSupabase(); // carica stato dal database all'avvio
+</script>
+</body>
+</html>
