@@ -471,6 +471,38 @@
   }
 
 
+  /* ACCORDION RIEPILOGO */
+  .acc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 8px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .acc-header:first-child { margin-top: 8px; }
+  .acc-title {
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .acc-arrow {
+    color: var(--muted);
+    font-size: 0.7rem;
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+  }
+  .acc-header.open .acc-arrow { transform: rotate(180deg); }
+  .acc-body {
+    display: none;
+    animation: fadeIn 0.2s ease;
+  }
+  .acc-body.open { display: block; }
+
   /* RIEPILOGO OVERLAY */
   .recap-overlay {
     display: none;
@@ -718,399 +750,6 @@
 </style>
 </head>
 <body>
-
-
-<!-- OVERLAY RIEPILOGO -->
-<div class="recap-overlay" id="recap-overlay">
-  <div class="recap-header">
-    <h2>Riepilogo viaggio</h2>
-    <button class="recap-close" onclick="toggleRecap()">✕ Chiudi</button>
-  </div>
-  <div class="recap-body">
-
-    <!-- VOLI -->
-    <div class="recap-section-title">✈️ Voli</div>
-
-    <div class="recap-item highlight">
-      <div class="recap-icon">🛫</div>
-      <div class="item-body">
-        <div class="item-time">Sab 16 · 06:00</div>
-        <div class="item-title">VCE → MAD</div>
-        <div class="item-note"><a href="https://www.flightradar24.com/data/flights/w46729" target="_blank">W46729</a> — Venezia · arr. 08:40</div>
-      </div>
-    </div>
-
-    <div class="recap-item highlight">
-      <div class="recap-icon">🛬</div>
-      <div class="item-body">
-        <div class="item-time">Lun 18 · 16:55</div>
-        <div class="item-title">MAD → VCE</div>
-        <div class="item-note"><a href="https://www.flightradar24.com/data/flights/fr1206" target="_blank">FR1206</a> — Ryanair · Barajas T1</div>
-      </div>
-    </div>
-
-    <!-- SABATO -->
-    <div class="recap-section-title">📍 Luoghi di interesse</div>
-    <div class="recap-day-label">Sabato 16</div>
-
-    <div class="recap-item">
-      <div class="recap-icon">🏛️</div>
-      <div class="item-body">
-        <div class="item-time">10:00</div>
-        <div class="item-title"><a href="https://maps.google.com/?q=Puerta+del+Sol+Madrid" target="_blank">Puerta del Sol</a></div>
-      </div>
-    </div>
-
-    <div class="recap-item">
-      <div class="recap-icon">🏟️</div>
-      <div class="item-body">
-        <div class="item-time">10:20</div>
-        <div class="item-title"><a href="https://maps.google.com/?q=Plaza+Mayor+Madrid" target="_blank">Plaza Mayor</a></div>
-      </div>
-    </div>
-
-    <div class="recap-item">
-      <div class="recap-icon">🥩</div>
-      <div class="item-body">
-        <div class="item-time">11:00</div>
-        <div class="item-title"><a href="https://maps.google.com/?q=Mercado+de+San+Miguel+Madrid" target="_blank">Mercado de San Miguel</a></div>
-        <div class="item-note">Aperitivo / brunch</div>
-      </div>
-    </div>
-
-    <div class="recap-item highlight">
-      <div class="recap-icon">🎉</div>
-      <div class="item-body">
-        <div class="item-time">00:30</div>
-        <div class="item-title"><a href="https://maps.google.com/?q=Teatro+Kapital+Calle+de+Atocha+125+Madrid" target="_blank">Teatro Kapital</a></div>
-        <div class="item-note">Calle de Atocha 125 — 15 min a piedi o 5 min in taxi</div>
-      </div>
-    </div>
-
-    <div class="recap-day-label">Domenica 17</div>
-
-    <div class="recap-item">
-      <div class="recap-icon">🌿</div>
-      <div class="item-body">
-        <div class="item-time">15:00</div>
-        <div class="item-title"><a href="https://maps.google.com/?q=Parque+del+Retiro+Madrid" target="_blank">Parque del Retiro</a></div>
-      </div>
-    </div>
-
-    <div class="recap-item highlight">
-      <div class="recap-icon">🚣</div>
-      <div class="item-body">
-        <div class="item-time">15:30</div>
-        <div class="item-title"><a href="https://maps.google.com/?q=Lago+del+Retiro+Madrid" target="_blank">Barca sul lago</a></div>
-        <div class="item-note">2 barche × 45 min — ~€8 a barca</div>
-      </div>
-    </div>
-
-    <div class="recap-item">
-      <div class="recap-icon">🏛️</div>
-      <div class="item-body">
-        <div class="item-time">16:30</div>
-        <div class="item-title"><a href="https://maps.google.com/?q=Palacio+de+Cristal+Madrid" target="_blank">Palacio de Cristal</a></div>
-        <div class="item-note">+ passeggiata nel parco</div>
-      </div>
-    </div>
-
-    <div class="recap-item highlight">
-      <div class="recap-icon">🌅</div>
-      <div class="item-body">
-        <div class="item-time">18:00</div>
-        <div class="item-title"><a href="https://maps.google.com/?q=Azotea+del+Circulo+de+Bellas+Artes+Madrid" target="_blank">Rooftop Azotea del Círculo de Bellas Artes</a></div>
-        <div class="item-note">~€6 ingresso · prenotare il tavolo in anticipo</div>
-      </div>
-    </div>
-
-    <div class="recap-day-label">Lunedì 18</div>
-
-    <div class="recap-item highlight">
-      <div class="recap-icon">👑</div>
-      <div class="item-body">
-        <div class="item-time">10:00 · opzione A</div>
-        <div class="item-title"><a href="https://maps.google.com/?q=Palacio+Real+Madrid" target="_blank">Palacio Real</a></div>
-        <div class="item-note">~1h 30 min · biglietti online in anticipo</div>
-      </div>
-    </div>
-
-    <div class="recap-item highlight">
-      <div class="recap-icon">⚽</div>
-      <div class="item-body">
-        <div class="item-time">10:00 · opzione B</div>
-        <div class="item-title"><a href="https://maps.google.com/?q=Estadio+Santiago+Bernabeu+Madrid" target="_blank">Tour Bernabéu</a></div>
-        <div class="item-note">~1h 30 min · taxi 20 min da centro</div>
-      </div>
-    </div>
-
-    <!-- RISTORANTI -->
-    <div class="recap-section-title">🍽️ Ristoranti</div>
-    <div class="recap-day-label">Sabato 16 · Cena</div>
-
-    <div class="recap-item">
-      <div class="recap-icon">🍷</div>
-      <div class="item-body">
-        <div class="item-title"><a href="https://maps.google.com/?q=Inclán+Brutal+Bar+Madrid" target="_blank">Inclán Brutal Bar</a></div>
-      </div>
-    </div>
-    <div class="recap-item">
-      <div class="recap-icon">🍷</div>
-      <div class="item-body">
-        <div class="item-title"><a href="https://maps.google.com/?q=Casa+Alberto+Madrid" target="_blank">Casa Alberto</a></div>
-      </div>
-    </div>
-    <div class="recap-item">
-      <div class="recap-icon">🍷</div>
-      <div class="item-body">
-        <div class="item-title"><a href="https://maps.google.com/?q=La+Musa+Latina+Madrid" target="_blank">La Musa Latina</a></div>
-      </div>
-    </div>
-    <div class="recap-item">
-      <div class="recap-icon">🍷</div>
-      <div class="item-body">
-        <div class="item-title"><a href="https://maps.google.com/?q=Taberna+Almería+Madrid" target="_blank">Taberna Almería</a></div>
-      </div>
-    </div>
-    <div class="recap-item">
-      <div class="recap-icon">🍷</div>
-      <div class="item-body">
-        <div class="item-title"><a href="https://maps.google.com/?q=Los+Galayos+Madrid" target="_blank">Los Galayos</a></div>
-      </div>
-    </div>
-    <div class="recap-item">
-      <div class="recap-icon">🍷</div>
-      <div class="item-body">
-        <div class="item-title"><a href="https://maps.google.com/?q=La+Finca+de+Susana+Madrid" target="_blank">La Finca de Susana</a></div>
-      </div>
-    </div>
-    <div class="recap-item">
-      <div class="recap-icon">🍷</div>
-      <div class="item-body">
-        <div class="item-title"><a href="https://maps.google.com/?q=Casa+González+Madrid" target="_blank">Casa González</a></div>
-      </div>
-    </div>
-
-    <div class="recap-day-label">Domenica 17 · Brunch</div>
-
-    <div class="recap-item">
-      <div class="recap-icon">☕</div>
-      <div class="item-body">
-        <div class="item-title"><a href="https://maps.google.com/?q=Superchulo+Gran+Via+Madrid" target="_blank">Superchulo Gran Vía</a></div>
-      </div>
-    </div>
-    <div class="recap-item">
-      <div class="recap-icon">☕</div>
-      <div class="item-body">
-        <div class="item-title"><a href="https://maps.google.com/?q=EatMyTrip+Malasaña+Madrid" target="_blank">EatMyTrip Malasaña</a></div>
-      </div>
-    </div>
-    <div class="recap-item">
-      <div class="recap-icon">☕</div>
-      <div class="item-body">
-        <div class="item-title"><a href="https://maps.google.com/?q=Le+Pralin+Madrid" target="_blank">Le Pralin</a></div>
-      </div>
-    </div>
-
-    <div class="recap-day-label">Domenica 17 · Cena</div>
-
-    <div class="recap-item">
-      <div class="recap-icon">🍷</div>
-      <div class="item-body">
-        <div class="item-title"><a href="https://maps.google.com/?q=Vinitus+Gran+Via+Madrid" target="_blank">Vinitus Gran Vía</a></div>
-      </div>
-    </div>
-    <div class="recap-item">
-      <div class="recap-icon">🍷</div>
-      <div class="item-body">
-        <div class="item-title"><a href="https://maps.google.com/?q=Diurno+Chueca+Madrid" target="_blank">Diurno Chueca</a></div>
-      </div>
-    </div>
-    <div class="recap-item">
-      <div class="recap-icon">🍷</div>
-      <div class="item-body">
-        <div class="item-title"><a href="https://maps.google.com/?q=La+Cerda+de+Chueca+Madrid" target="_blank">La Cerda de Chueca</a></div>
-      </div>
-    </div>
-    <div class="recap-item">
-      <div class="recap-icon">🍷</div>
-      <div class="item-body">
-        <div class="item-title"><a href="https://maps.google.com/?q=Fratelli+d%27Italia+Madrid" target="_blank">Fratelli d'Italia</a></div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- OVERLAY TODO + TRASPORTI -->
-<div class="recap-overlay" id="todo-overlay">
-  <div class="recap-header">
-    <h2>To-Do</h2>
-    <button class="recap-close" onclick="toggleTodo()">✕ Chiudi</button>
-  </div>
-  <div class="recap-body">
-
-    <!-- PRENOTAZIONI -->
-    <div class="recap-section-title">🎟️ Prenotazioni da fare</div>
-
-    <div class="todo-item" data-tid="t1" onclick="toggleTodoItem(this)">
-      <div class="t-check"></div>
-      <div class="t-body">
-        <div class="t-when">Subito</div>
-        <div class="t-what">Check-in online Wizz Air</div>
-        <div class="t-where">App Wizz Air</div>
-      </div>
-      <div class="t-prio">🔴</div>
-    </div>
-
-    <div class="todo-item" data-tid="t2" onclick="toggleTodoItem(this)">
-      <div class="t-check"></div>
-      <div class="t-body">
-        <div class="t-when">Subito</div>
-        <div class="t-what">Biglietti Teatro Kapital</div>
-        <div class="t-where"><a href="https://www.teatrokapital.com" target="_blank" onclick="event.stopPropagation()">teatrokapital.com</a></div>
-      </div>
-      <div class="t-prio">🔴</div>
-    </div>
-
-    <div class="todo-item" data-tid="t3" onclick="toggleTodoItem(this)">
-      <div class="t-check"></div>
-      <div class="t-body">
-        <div class="t-when">Subito</div>
-        <div class="t-what">Parcheggio Aeroporto Venezia</div>
-        <div class="t-where"><a href="https://maps.google.com/?q=Parcheggio+Aeroporto+Venezia+Marco+Polo" target="_blank" onclick="event.stopPropagation()">Venezia Marco Polo</a></div>
-      </div>
-      <div class="t-prio">🔴</div>
-    </div>
-
-    <div class="todo-item" data-tid="t4" onclick="toggleTodoItem(this)">
-      <div class="t-check"></div>
-      <div class="t-body">
-        <div class="t-when">Entro gio 14 mag</div>
-        <div class="t-what">Cena sabato sera</div>
-        <div class="t-where">Sito / telefono locale scelto</div>
-      </div>
-      <div class="t-prio">🟡</div>
-    </div>
-
-    <div class="todo-item" data-tid="t5" onclick="toggleTodoItem(this)">
-      <div class="t-check"></div>
-      <div class="t-body">
-        <div class="t-when">Entro ven 15 mag</div>
-        <div class="t-what">Deposito bagagli sabato mattina Madrid</div>
-        <div class="t-where"><a href="https://stasher.com" target="_blank" onclick="event.stopPropagation()">Stasher.com</a> · <a href="https://luggagehero.com" target="_blank" onclick="event.stopPropagation()">LuggageHero.com</a></div>
-      </div>
-      <div class="t-prio">🟡</div>
-    </div>
-
-    <div class="todo-item" data-tid="t6" onclick="toggleTodoItem(this)">
-      <div class="t-check"></div>
-      <div class="t-body">
-        <div class="t-when">Entro sab 16 mag</div>
-        <div class="t-what">Biglietti Palacio Real</div>
-        <div class="t-where"><a href="https://www.patrimonionacional.es" target="_blank" onclick="event.stopPropagation()">patrimonionacional.es</a></div>
-      </div>
-      <div class="t-prio">🟡</div>
-    </div>
-
-    <div class="todo-item" data-tid="t7" onclick="toggleTodoItem(this)">
-      <div class="t-check"></div>
-      <div class="t-body">
-        <div class="t-when">Entro sab 16 mag</div>
-        <div class="t-what">Tavolo rooftop Círculo de Bellas Artes</div>
-        <div class="t-where"><a href="https://www.circulobellasartes.com" target="_blank" onclick="event.stopPropagation()">circulobellasartes.com</a></div>
-      </div>
-      <div class="t-prio">🟡</div>
-    </div>
-
-    <div class="todo-item" data-tid="t8" onclick="toggleTodoItem(this)">
-      <div class="t-check"></div>
-      <div class="t-body">
-        <div class="t-when">Entro sab 16 mag</div>
-        <div class="t-what">Check-in online Ryanair</div>
-        <div class="t-where">App Ryanair</div>
-      </div>
-      <div class="t-prio">🔴</div>
-    </div>
-
-    <div class="todo-item" data-tid="t9" onclick="toggleTodoItem(this)">
-      <div class="t-check"></div>
-      <div class="t-body">
-        <div class="t-when">Dom 17 mag mattina</div>
-        <div class="t-what">Barca Retiro (2 slot × 2 barche)</div>
-        <div class="t-where">App Madrid Móvil</div>
-      </div>
-      <div class="t-prio">🟢</div>
-    </div>
-
-    <div class="todo-item" data-tid="t10" onclick="toggleTodoItem(this)">
-      <div class="t-check"></div>
-      <div class="t-body">
-        <div class="t-when">Dom 17 mag sera</div>
-        <div class="t-what">Biglietti Tour Bernabéu (se confermato)</div>
-        <div class="t-where"><a href="https://www.realmadrid.com" target="_blank" onclick="event.stopPropagation()">realmadrid.com</a></div>
-      </div>
-      <div class="t-prio">🟢</div>
-    </div>
-
-    <!-- TRASPORTI -->
-    <div class="recap-section-title">🚗🚇 Piano trasporti</div>
-
-    <div class="recap-day-label">Sab 16 — Da Barajas al centro</div>
-    <div class="transport-block">
-      <h3>✈️ Arrivo → Centro Madrid</h3>
-      <div class="transport-step">
-        <span class="t-icon">⚠️</span>
-        <span>Verificate il terminal sulla carta d'imbarco — <span class="t-bold">T4</span> oppure <span class="t-bold">T1-T2-T3</span> hanno stazioni metro diverse</span>
-      </div>
-      <div class="transport-step">
-        <span class="t-icon">🚇</span>
-        <span>Metro <span class="t-bold">Línea 8</span> → <span class="t-bold">Nuevos Ministerios</span> <span class="t-muted">~18 min</span></span>
-      </div>
-      <div class="transport-step">
-        <span class="t-icon">🔄</span>
-        <span>Cambio <span class="t-bold">Línea 6 o 10</span> → <span class="t-bold">Sol</span> <span class="t-muted">~10 min</span></span>
-      </div>
-      <div class="transport-step">
-        <span class="t-icon">💳</span>
-        <span>Pagamento contactless ai tornelli · <span class="t-bold">~€5 a testa</span></span>
-      </div>
-      <div class="transport-step">
-        <span class="t-icon">🏁</span>
-        <span>Arrivo in centro: <span class="t-bold">~10:00</span></span>
-      </div>
-    </div>
-
-    <div class="recap-day-label">Lun 18 — Dal centro a Barajas</div>
-    <div class="transport-block">
-      <h3>🏠 Centro Madrid → ✈️ Barajas T1</h3>
-      <div class="transport-step">
-        <span class="t-icon">⏰</span>
-        <span>Partenza da casa: <span class="t-bold">ore 14:00</span></span>
-      </div>
-      <div class="transport-step">
-        <span class="t-icon">🚶</span>
-        <span>A piedi fino a metro <span class="t-bold">Sol</span> <span class="t-muted">~5 min</span></span>
-      </div>
-      <div class="transport-step">
-        <span class="t-icon">🚇</span>
-        <span><span class="t-bold">Línea 1</span> Sol → Nuevos Ministerios <span class="t-muted">~5 min</span></span>
-      </div>
-      <div class="transport-step">
-        <span class="t-icon">🔄</span>
-        <span>Cambio <span class="t-bold">Línea 8</span> → <span class="t-bold">Aeropuerto T1-T2-T3</span> <span class="t-muted">~18 min</span></span>
-      </div>
-      <div class="transport-step">
-        <span class="t-icon">🏁</span>
-        <span>Arrivo in aeroporto: <span class="t-bold">~14:30</span> · Volo <span class="t-bold">16:55</span> Ryanair FR1206</span>
-      </div>
-      <div class="transport-alert">
-        <strong>🔴 Piano B:</strong> se con i bagagli il gruppo non se la sente, 2 taxi → ~€70 totali
-      </div>
-    </div>
-
-  </div>
-</div>
 
 <header>
   <div class="header-controls">
@@ -1598,6 +1237,12 @@
   }
 
   // ── TEMA ────────────────────────────────────────────────────────
+  function toggleAcc(header, bodyId) {
+    const body = document.getElementById(bodyId);
+    header.classList.toggle('open');
+    body.classList.toggle('open');
+  }
+
   function toggleRecap() {
     const overlay = document.getElementById('recap-overlay');
     overlay.classList.toggle('open');
@@ -1638,5 +1283,294 @@
 
   loadFromSupabase(); // carica stato dal database all'avvio
 </script>
+<!-- OVERLAY RIEPILOGO -->
+<div class="recap-overlay" id="recap-overlay">
+  <div class="recap-header">
+    <h2>Riepilogo viaggio</h2>
+    <button class="recap-close" onclick="toggleRecap()">✕ Chiudi</button>
+  </div>
+  <div class="recap-body">
+
+    <!-- VOLI -->
+    <div class="acc-header open" onclick="toggleAcc(this,'acc-voli')">
+      <span class="acc-title">✈️ Voli</span>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body open" id="acc-voli">
+      <div class="recap-item highlight">
+        <div class="recap-icon">🛫</div>
+        <div class="item-body">
+          <div class="item-time">Sab 16 · 06:00</div>
+          <div class="item-title">VCE → MAD</div>
+          <div class="item-note"><a href="https://www.flightradar24.com/data/flights/w46729" target="_blank">W46729</a> — Venezia · arr. 08:40</div>
+        </div>
+      </div>
+      <div class="recap-item highlight">
+        <div class="recap-icon">🛬</div>
+        <div class="item-body">
+          <div class="item-time">Lun 18 · 16:55</div>
+          <div class="item-title">MAD → VCE</div>
+          <div class="item-note"><a href="https://www.flightradar24.com/data/flights/fr1206" target="_blank">FR1206</a> — Ryanair · Barajas T1</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LUOGHI -->
+    <div class="acc-header" onclick="toggleAcc(this,'acc-luoghi')">
+      <span class="acc-title">📍 Luoghi di interesse</span>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body" id="acc-luoghi">
+      <div class="recap-day-label">Sabato 16</div>
+      <div class="recap-item">
+        <div class="recap-icon">🏛️</div>
+        <div class="item-body">
+          <div class="item-time">10:00</div>
+          <div class="item-title"><a href="https://maps.google.com/?q=Puerta+del+Sol+Madrid" target="_blank">Puerta del Sol</a></div>
+        </div>
+      </div>
+      <div class="recap-item">
+        <div class="recap-icon">🏟️</div>
+        <div class="item-body">
+          <div class="item-time">10:20</div>
+          <div class="item-title"><a href="https://maps.google.com/?q=Plaza+Mayor+Madrid" target="_blank">Plaza Mayor</a></div>
+        </div>
+      </div>
+      <div class="recap-item">
+        <div class="recap-icon">🥩</div>
+        <div class="item-body">
+          <div class="item-time">11:00</div>
+          <div class="item-title"><a href="https://maps.google.com/?q=Mercado+de+San+Miguel+Madrid" target="_blank">Mercado de San Miguel</a></div>
+          <div class="item-note">Aperitivo / brunch</div>
+        </div>
+      </div>
+      <div class="recap-item highlight">
+        <div class="recap-icon">🎉</div>
+        <div class="item-body">
+          <div class="item-time">00:30</div>
+          <div class="item-title"><a href="https://maps.google.com/?q=Teatro+Kapital+Calle+de+Atocha+125+Madrid" target="_blank">Teatro Kapital</a></div>
+          <div class="item-note">Calle de Atocha 125 — 15 min a piedi o 5 min in taxi</div>
+        </div>
+      </div>
+      <div class="recap-day-label">Domenica 17</div>
+      <div class="recap-item">
+        <div class="recap-icon">🌿</div>
+        <div class="item-body">
+          <div class="item-time">15:00</div>
+          <div class="item-title"><a href="https://maps.google.com/?q=Parque+del+Retiro+Madrid" target="_blank">Parque del Retiro</a></div>
+        </div>
+      </div>
+      <div class="recap-item highlight">
+        <div class="recap-icon">🚣</div>
+        <div class="item-body">
+          <div class="item-time">15:30</div>
+          <div class="item-title"><a href="https://maps.google.com/?q=Lago+del+Retiro+Madrid" target="_blank">Barca sul lago</a></div>
+          <div class="item-note">2 barche × 45 min — ~€8 a barca</div>
+        </div>
+      </div>
+      <div class="recap-item">
+        <div class="recap-icon">🏛️</div>
+        <div class="item-body">
+          <div class="item-time">16:30</div>
+          <div class="item-title"><a href="https://maps.google.com/?q=Palacio+de+Cristal+Madrid" target="_blank">Palacio de Cristal</a></div>
+          <div class="item-note">+ passeggiata nel parco</div>
+        </div>
+      </div>
+      <div class="recap-item highlight">
+        <div class="recap-icon">🌅</div>
+        <div class="item-body">
+          <div class="item-time">18:00</div>
+          <div class="item-title"><a href="https://maps.google.com/?q=Azotea+del+Circulo+de+Bellas+Artes+Madrid" target="_blank">Rooftop Azotea del Círculo de Bellas Artes</a></div>
+          <div class="item-note">~€6 ingresso · prenotare il tavolo in anticipo</div>
+        </div>
+      </div>
+      <div class="recap-day-label">Lunedì 18</div>
+      <div class="recap-item highlight">
+        <div class="recap-icon">👑</div>
+        <div class="item-body">
+          <div class="item-time">10:00 · opzione A</div>
+          <div class="item-title"><a href="https://maps.google.com/?q=Palacio+Real+Madrid" target="_blank">Palacio Real</a></div>
+          <div class="item-note">~1h 30 min · biglietti online in anticipo</div>
+        </div>
+      </div>
+      <div class="recap-item highlight">
+        <div class="recap-icon">⚽</div>
+        <div class="item-body">
+          <div class="item-time">10:00 · opzione B</div>
+          <div class="item-title"><a href="https://maps.google.com/?q=Estadio+Santiago+Bernabeu+Madrid" target="_blank">Tour Bernabéu</a></div>
+          <div class="item-note">~1h 30 min · taxi 20 min da centro</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RISTORANTI -->
+    <div class="acc-header" onclick="toggleAcc(this,'acc-rist')">
+      <span class="acc-title">🍽️ Ristoranti</span>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body" id="acc-rist">
+      <div class="recap-day-label">Sabato 16 · Cena</div>
+      <div class="recap-item"><div class="recap-icon">🍷</div><div class="item-body"><div class="item-title"><a href="https://maps.google.com/?q=Inclán+Brutal+Bar+Madrid" target="_blank">Inclán Brutal Bar</a></div></div></div>
+      <div class="recap-item"><div class="recap-icon">🍷</div><div class="item-body"><div class="item-title"><a href="https://maps.google.com/?q=Casa+Alberto+Madrid" target="_blank">Casa Alberto</a></div></div></div>
+      <div class="recap-item"><div class="recap-icon">🍷</div><div class="item-body"><div class="item-title"><a href="https://maps.google.com/?q=La+Musa+Latina+Madrid" target="_blank">La Musa Latina</a></div></div></div>
+      <div class="recap-item"><div class="recap-icon">🍷</div><div class="item-body"><div class="item-title"><a href="https://maps.google.com/?q=Taberna+Almería+Madrid" target="_blank">Taberna Almería</a></div></div></div>
+      <div class="recap-item"><div class="recap-icon">🍷</div><div class="item-body"><div class="item-title"><a href="https://maps.google.com/?q=Los+Galayos+Madrid" target="_blank">Los Galayos</a></div></div></div>
+      <div class="recap-item"><div class="recap-icon">🍷</div><div class="item-body"><div class="item-title"><a href="https://maps.google.com/?q=La+Finca+de+Susana+Madrid" target="_blank">La Finca de Susana</a></div></div></div>
+      <div class="recap-item"><div class="recap-icon">🍷</div><div class="item-body"><div class="item-title"><a href="https://maps.google.com/?q=Casa+González+Madrid" target="_blank">Casa González</a></div></div></div>
+      <div class="recap-day-label">Domenica 17 · Brunch</div>
+      <div class="recap-item"><div class="recap-icon">☕</div><div class="item-body"><div class="item-title"><a href="https://maps.google.com/?q=Superchulo+Gran+Via+Madrid" target="_blank">Superchulo Gran Vía</a></div></div></div>
+      <div class="recap-item"><div class="recap-icon">☕</div><div class="item-body"><div class="item-title"><a href="https://maps.google.com/?q=EatMyTrip+Malasaña+Madrid" target="_blank">EatMyTrip Malasaña</a></div></div></div>
+      <div class="recap-item"><div class="recap-icon">☕</div><div class="item-body"><div class="item-title"><a href="https://maps.google.com/?q=Le+Pralin+Madrid" target="_blank">Le Pralin</a></div></div></div>
+      <div class="recap-day-label">Domenica 17 · Cena</div>
+      <div class="recap-item"><div class="recap-icon">🍷</div><div class="item-body"><div class="item-title"><a href="https://maps.google.com/?q=Vinitus+Gran+Via+Madrid" target="_blank">Vinitus Gran Vía</a></div></div></div>
+      <div class="recap-item"><div class="recap-icon">🍷</div><div class="item-body"><div class="item-title"><a href="https://maps.google.com/?q=Diurno+Chueca+Madrid" target="_blank">Diurno Chueca</a></div></div></div>
+      <div class="recap-item"><div class="recap-icon">🍷</div><div class="item-body"><div class="item-title"><a href="https://maps.google.com/?q=La+Cerda+de+Chueca+Madrid" target="_blank">La Cerda de Chueca</a></div></div></div>
+      <div class="recap-item"><div class="recap-icon">🍷</div><div class="item-body"><div class="item-title"><a href="https://maps.google.com/?q=Fratelli+d%27Italia+Madrid" target="_blank">Fratelli d'Italia</a></div></div></div>
+    </div>
+
+    <!-- PIANO TRASPORTI -->
+    <div class="acc-header" onclick="toggleAcc(this,'acc-trasp')">
+      <span class="acc-title">🚗🚇 Piano trasporti</span>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body" id="acc-trasp">
+      <div class="recap-day-label">Sab 16 — Da Barajas al centro</div>
+      <div class="transport-block">
+        <h3>✈️ Arrivo → Centro Madrid</h3>
+        <div class="transport-step"><span class="t-icon">⚠️</span><span>Verificate il terminal sulla carta d'imbarco — <span class="t-bold">T4</span> oppure <span class="t-bold">T1-T2-T3</span> hanno stazioni metro diverse</span></div>
+        <div class="transport-step"><span class="t-icon">🚇</span><span>Metro <span class="t-bold">Línea 8</span> → <span class="t-bold">Nuevos Ministerios</span> <span class="t-muted">~18 min</span></span></div>
+        <div class="transport-step"><span class="t-icon">🔄</span><span>Cambio <span class="t-bold">Línea 6 o 10</span> → <span class="t-bold">Sol</span> <span class="t-muted">~10 min</span></span></div>
+        <div class="transport-step"><span class="t-icon">💳</span><span>Pagamento contactless ai tornelli · <span class="t-bold">~€5 a testa</span></span></div>
+        <div class="transport-step"><span class="t-icon">🏁</span><span>Arrivo in centro: <span class="t-bold">~10:00</span></span></div>
+      </div>
+      <div class="recap-day-label">Lun 18 — Dal centro a Barajas</div>
+      <div class="transport-block">
+        <h3>🏠 Centro Madrid → ✈️ Barajas T1</h3>
+        <div class="transport-step"><span class="t-icon">⏰</span><span>Partenza da casa: <span class="t-bold">ore 14:00</span></span></div>
+        <div class="transport-step"><span class="t-icon">🚶</span><span>A piedi fino a metro <span class="t-bold">Sol</span> <span class="t-muted">~5 min</span></span></div>
+        <div class="transport-step"><span class="t-icon">🚇</span><span><span class="t-bold">Línea 1</span> Sol → Nuevos Ministerios <span class="t-muted">~5 min</span></span></div>
+        <div class="transport-step"><span class="t-icon">🔄</span><span>Cambio <span class="t-bold">Línea 8</span> → <span class="t-bold">Aeropuerto T1-T2-T3</span> <span class="t-muted">~18 min</span></span></div>
+        <div class="transport-step"><span class="t-icon">🏁</span><span>Arrivo in aeroporto: <span class="t-bold">~14:30</span> · Volo <span class="t-bold">16:55</span> Ryanair FR1206</span></div>
+        <div class="transport-alert"><strong>🔴 Piano B:</strong> se con i bagagli il gruppo non se la sente, 2 taxi → ~€70 totali</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- OVERLAY TODO + TRASPORTI -->
+<div class="recap-overlay" id="todo-overlay">
+  <div class="recap-header">
+    <h2>To-Do</h2>
+    <button class="recap-close" onclick="toggleTodo()">✕ Chiudi</button>
+  </div>
+  <div class="recap-body">
+
+    <!-- PRENOTAZIONI -->
+    <div class="recap-section-title">🎟️ Prenotazioni da fare</div>
+
+    <div class="todo-item" data-tid="t1" onclick="toggleTodoItem(this)">
+      <div class="t-check"></div>
+      <div class="t-body">
+        <div class="t-when">Subito</div>
+        <div class="t-what">Check-in online Wizz Air</div>
+        <div class="t-where">App Wizz Air</div>
+      </div>
+      <div class="t-prio">🔴</div>
+    </div>
+
+    <div class="todo-item" data-tid="t2" onclick="toggleTodoItem(this)">
+      <div class="t-check"></div>
+      <div class="t-body">
+        <div class="t-when">Subito</div>
+        <div class="t-what">Biglietti Teatro Kapital</div>
+        <div class="t-where"><a href="https://www.teatrokapital.com" target="_blank" onclick="event.stopPropagation()">teatrokapital.com</a></div>
+      </div>
+      <div class="t-prio">🔴</div>
+    </div>
+
+    <div class="todo-item" data-tid="t3" onclick="toggleTodoItem(this)">
+      <div class="t-check"></div>
+      <div class="t-body">
+        <div class="t-when">Subito</div>
+        <div class="t-what">Parcheggio Aeroporto Venezia</div>
+        <div class="t-where"><a href="https://maps.google.com/?q=Parcheggio+Aeroporto+Venezia+Marco+Polo" target="_blank" onclick="event.stopPropagation()">Venezia Marco Polo</a></div>
+      </div>
+      <div class="t-prio">🔴</div>
+    </div>
+
+    <div class="todo-item" data-tid="t4" onclick="toggleTodoItem(this)">
+      <div class="t-check"></div>
+      <div class="t-body">
+        <div class="t-when">Entro gio 14 mag</div>
+        <div class="t-what">Cena sabato sera</div>
+        <div class="t-where">Sito / telefono locale scelto</div>
+      </div>
+      <div class="t-prio">🟡</div>
+    </div>
+
+    <div class="todo-item" data-tid="t5" onclick="toggleTodoItem(this)">
+      <div class="t-check"></div>
+      <div class="t-body">
+        <div class="t-when">Entro ven 15 mag</div>
+        <div class="t-what">Deposito bagagli sabato mattina Madrid</div>
+        <div class="t-where"><a href="https://stasher.com" target="_blank" onclick="event.stopPropagation()">Stasher.com</a> · <a href="https://luggagehero.com" target="_blank" onclick="event.stopPropagation()">LuggageHero.com</a></div>
+      </div>
+      <div class="t-prio">🟡</div>
+    </div>
+
+    <div class="todo-item" data-tid="t6" onclick="toggleTodoItem(this)">
+      <div class="t-check"></div>
+      <div class="t-body">
+        <div class="t-when">Entro sab 16 mag</div>
+        <div class="t-what">Biglietti Palacio Real</div>
+        <div class="t-where"><a href="https://www.patrimonionacional.es" target="_blank" onclick="event.stopPropagation()">patrimonionacional.es</a></div>
+      </div>
+      <div class="t-prio">🟡</div>
+    </div>
+
+    <div class="todo-item" data-tid="t7" onclick="toggleTodoItem(this)">
+      <div class="t-check"></div>
+      <div class="t-body">
+        <div class="t-when">Entro sab 16 mag</div>
+        <div class="t-what">Tavolo rooftop Círculo de Bellas Artes</div>
+        <div class="t-where"><a href="https://www.circulobellasartes.com" target="_blank" onclick="event.stopPropagation()">circulobellasartes.com</a></div>
+      </div>
+      <div class="t-prio">🟡</div>
+    </div>
+
+    <div class="todo-item" data-tid="t8" onclick="toggleTodoItem(this)">
+      <div class="t-check"></div>
+      <div class="t-body">
+        <div class="t-when">Entro sab 16 mag</div>
+        <div class="t-what">Check-in online Ryanair</div>
+        <div class="t-where">App Ryanair</div>
+      </div>
+      <div class="t-prio">🔴</div>
+    </div>
+
+    <div class="todo-item" data-tid="t9" onclick="toggleTodoItem(this)">
+      <div class="t-check"></div>
+      <div class="t-body">
+        <div class="t-when">Dom 17 mag mattina</div>
+        <div class="t-what">Barca Retiro (2 slot × 2 barche)</div>
+        <div class="t-where">App Madrid Móvil</div>
+      </div>
+      <div class="t-prio">🟢</div>
+    </div>
+
+    <div class="todo-item" data-tid="t10" onclick="toggleTodoItem(this)">
+      <div class="t-check"></div>
+      <div class="t-body">
+        <div class="t-when">Dom 17 mag sera</div>
+        <div class="t-what">Biglietti Tour Bernabéu (se confermato)</div>
+        <div class="t-where"><a href="https://www.realmadrid.com" target="_blank" onclick="event.stopPropagation()">realmadrid.com</a></div>
+      </div>
+      <div class="t-prio">🟢</div>
+    </div>
+
+  </div>
+</div>
+
 </body>
 </html>
