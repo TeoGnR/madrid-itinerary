@@ -121,37 +121,6 @@
     animation: fadeDown 0.7s ease 0.2s both;
   }
 
-  /* PROGRESS BAR */
-  .progress-wrap {
-    padding: 20px 24px 0;
-    max-width: 680px;
-    margin: 0 auto;
-    animation: fadeDown 0.7s ease 0.3s both;
-  }
-
-  .progress-label {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.78rem;
-    color: var(--muted);
-    margin-bottom: 8px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .progress-bar {
-    height: 3px;
-    background: var(--surface2);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--gold), var(--gold-light));
-    border-radius: 2px;
-    transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
-  }
 
   /* DAY NAVIGATION */
   .day-nav {
@@ -261,16 +230,17 @@
   }
 
   .item.done {
-    opacity: 0.45;
+    opacity: 0.4;
+    border-left: 3px solid #4caf7a;
+    padding-left: 5px;
   }
 
   .item.done .item-title {
-    text-decoration: line-through;
-    color: var(--done-text);
+    color: var(--text);
   }
 
   .item.done .item-time {
-    color: var(--done-text);
+    color: var(--muted);
   }
 
   .item.highlight {
@@ -297,8 +267,7 @@
   }
 
   .item.done .checkbox {
-    background: var(--gold);
-    border-color: var(--gold);
+    visibility: hidden;
   }
 
   .checkbox-inner {
@@ -405,24 +374,6 @@
     animation: fadeIn 0.2s ease;
   }
 
-  /* WARNING BOX */
-  .warning-box {
-    margin: 24px 8px;
-    padding: 16px 18px;
-    background: rgba(201,76,76,0.07);
-    border: 1px solid rgba(201,76,76,0.25);
-    border-radius: 8px;
-    font-size: 0.84rem;
-    color: #d49090;
-    line-height: 1.55;
-  }
-
-  .warning-box strong {
-    color: #e07070;
-    display: block;
-    margin-bottom: 4px;
-    font-weight: 500;
-  }
 
   /* RESET + STATS */
   .stats-bar {
@@ -515,29 +466,721 @@
     h1 { font-size: 2.2rem; }
     .day-btn { padding: 8px 14px; font-size: 0.75rem; }
     .theme-toggle { top: 12px; right: 12px; padding: 6px 11px; }
+    .recap-toggle { top: 12px; left: 12px; padding: 6px 11px; }
   }
+
+  /* RIEPILOGO BUTTON */
+  .recap-toggle {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 200;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    padding: 7px 14px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: all 0.25s ease;
+    backdrop-filter: blur(8px);
+  }
+  .recap-toggle:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* RIEPILOGO OVERLAY */
+  .recap-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background: var(--bg);
+    overflow-y: auto;
+    animation: fadeIn 0.3s ease;
+  }
+  .recap-overlay.open { display: block; }
+
+  .recap-header {
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+    backdrop-filter: blur(8px);
+  }
+  .recap-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--cream);
+    font-weight: 400;
+  }
+  .recap-close {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    padding: 6px 14px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    transition: all 0.2s;
+  }
+  .recap-close:hover { border-color: var(--gold); color: var(--gold); }
+
+  .recap-body {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 16px 80px;
+  }
+
+  .recap-section-title {
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 24px 8px 10px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2px;
+  }
+
+  .recap-day-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 14px 8px 4px;
+    font-weight: 500;
+  }
+
+  /* Stile item riepilogo — uguale agli item checklist ma senza interazione spunta */
+  .recap-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 14px 8px;
+    border-bottom: 1px solid var(--border-item);
+    border-radius: 6px;
+  }
+  .recap-item .recap-icon {
+    flex-shrink: 0;
+    width: 20px;
+    text-align: center;
+    margin-top: 2px;
+    font-size: 1rem;
+  }
+  .recap-item .item-body { flex: 1; }
+  .recap-item .item-time {
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .recap-item .item-title {
+    font-size: 0.97rem;
+    color: var(--text);
+    line-height: 1.45;
+    font-weight: 400;
+  }
+  .recap-item .item-note {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .recap-item.highlight { background: rgba(201,168,76,0.06); border-color: rgba(201,168,76,0.18); }
+  .recap-item .item-title a { color: var(--gold); text-decoration: none; }
+  .recap-item .item-title a:hover { text-decoration: underline; }
+  .recap-item .item-note a { color: var(--gold); text-decoration: none; }
+  .recap-item .item-note a:hover { text-decoration: underline; }
+
+  /* SECONDO PULSANTE FISSO */
+  .todo-toggle {
+    position: fixed;
+    top: 56px;
+    left: 16px;
+    z-index: 200;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    padding: 7px 14px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: all 0.25s ease;
+    backdrop-filter: blur(8px);
+  }
+  .todo-toggle:hover { border-color: var(--gold); color: var(--gold); }
+
+  @media (max-width: 480px) {
+    .todo-toggle { top: 52px; left: 12px; padding: 6px 11px; }
+  }
+
+  /* TODO ITEM — spuntabile */
+  .todo-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 13px 8px;
+    border-bottom: 1px solid var(--border-item);
+    cursor: pointer;
+    border-radius: 6px;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+    transition: opacity 0.2s;
+  }
+  .todo-item:hover { background: var(--surface); }
+  .todo-item.done {
+    opacity: 0.4;
+    border-left: 3px solid #4caf7a;
+    padding-left: 5px;
+  }
+  .todo-item .t-check {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid #3a3830;
+    border-radius: 50%;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .todo-item.done .t-check { visibility: hidden; }
+  .todo-item .t-body { flex: 1; }
+  .todo-item .t-when {
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .todo-item .t-what {
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .todo-item .t-where {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 3px;
+    font-style: italic;
+  }
+  .todo-item .t-where a { color: var(--gold); text-decoration: none; }
+  .todo-item .t-prio { flex-shrink: 0; font-size: 1rem; margin-top: 2px; }
+
+  /* STILI SPECIFICI OVERLAY TODO — tabella non più usata */
+  .todo-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 4px 0 8px;
+    font-size: 0.84rem;
+  }
+  .todo-table th {
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    font-weight: 500;
+  }
+  .todo-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid var(--border-item);
+    color: var(--text);
+    vertical-align: top;
+    line-height: 1.4;
+  }
+  .todo-table td a { color: var(--gold); text-decoration: none; }
+  .todo-table td a:hover { text-decoration: underline; }
+  .todo-table tr:last-child td { border-bottom: none; }
+  .todo-table .col-when { color: var(--muted); font-size: 0.78rem; white-space: nowrap; }
+  .todo-table .col-prio { text-align: center; white-space: nowrap; font-size: 0.82rem; }
+
+  /* Trasporti */
+  .transport-block {
+    margin: 8px 0 20px;
+    padding: 16px;
+    background: var(--surface);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .transport-block h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .transport-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border-item);
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .transport-step:last-child { border-bottom: none; }
+  .transport-step .t-icon { flex-shrink: 0; width: 18px; text-align: center; }
+  .transport-step .t-bold { font-weight: 500; color: var(--cream); }
+  .transport-step .t-muted { color: var(--muted); font-size: 0.78rem; }
+  .transport-alert {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: rgba(201,76,76,0.07);
+    border: 1px solid rgba(201,76,76,0.25);
+    border-radius: 6px;
+    font-size: 0.82rem;
+    color: #d49090;
+    line-height: 1.5;
+  }
+  .transport-alert strong { color: #e07070; }
+
 </style>
 </head>
 <body>
+
+<button class="recap-toggle" onclick="toggleRecap()">
+  <span>📋</span>
+  <span>Riepilogo</span>
+</button>
 
 <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">
   <span class="theme-icon" id="theme-icon">☀️</span>
   <span id="theme-label">Chiaro</span>
 </button>
 
+<!-- OVERLAY RIEPILOGO -->
+<div class="recap-overlay" id="recap-overlay">
+  <div class="recap-header">
+    <h2>Riepilogo viaggio</h2>
+    <button class="recap-close" onclick="toggleRecap()">✕ Chiudi</button>
+  </div>
+  <div class="recap-body">
+
+    <!-- VOLI -->
+    <div class="recap-section-title">✈️ Voli</div>
+
+    <div class="recap-item highlight">
+      <div class="recap-icon">🛫</div>
+      <div class="item-body">
+        <div class="item-time">Sab 16 · 06:00</div>
+        <div class="item-title">VCE → MAD</div>
+        <div class="item-note"><a href="https://www.flightradar24.com/data/flights/w46729" target="_blank">W46729</a> — Venezia · arr. 08:40</div>
+      </div>
+    </div>
+
+    <div class="recap-item highlight">
+      <div class="recap-icon">🛬</div>
+      <div class="item-body">
+        <div class="item-time">Lun 18 · 16:55</div>
+        <div class="item-title">MAD → VCE</div>
+        <div class="item-note"><a href="https://www.flightradar24.com/data/flights/fr1206" target="_blank">FR1206</a> — Ryanair · Barajas T1</div>
+      </div>
+    </div>
+
+    <!-- SABATO -->
+    <div class="recap-section-title">📍 Luoghi di interesse</div>
+    <div class="recap-day-label">Sabato 16</div>
+
+    <div class="recap-item">
+      <div class="recap-icon">🏛️</div>
+      <div class="item-body">
+        <div class="item-time">10:00</div>
+        <div class="item-title"><a href="https://maps.google.com/?q=Puerta+del+Sol+Madrid" target="_blank">Puerta del Sol</a></div>
+      </div>
+    </div>
+
+    <div class="recap-item">
+      <div class="recap-icon">🏟️</div>
+      <div class="item-body">
+        <div class="item-time">10:20</div>
+        <div class="item-title"><a href="https://maps.google.com/?q=Plaza+Mayor+Madrid" target="_blank">Plaza Mayor</a></div>
+      </div>
+    </div>
+
+    <div class="recap-item">
+      <div class="recap-icon">🥩</div>
+      <div class="item-body">
+        <div class="item-time">11:00</div>
+        <div class="item-title"><a href="https://maps.google.com/?q=Mercado+de+San+Miguel+Madrid" target="_blank">Mercado de San Miguel</a></div>
+        <div class="item-note">Aperitivo / brunch</div>
+      </div>
+    </div>
+
+    <div class="recap-item highlight">
+      <div class="recap-icon">🎉</div>
+      <div class="item-body">
+        <div class="item-time">00:30</div>
+        <div class="item-title"><a href="https://maps.google.com/?q=Teatro+Kapital+Calle+de+Atocha+125+Madrid" target="_blank">Teatro Kapital</a></div>
+        <div class="item-note">Calle de Atocha 125 — 15 min a piedi o 5 min in taxi</div>
+      </div>
+    </div>
+
+    <div class="recap-day-label">Domenica 17</div>
+
+    <div class="recap-item">
+      <div class="recap-icon">🌿</div>
+      <div class="item-body">
+        <div class="item-time">15:00</div>
+        <div class="item-title"><a href="https://maps.google.com/?q=Parque+del+Retiro+Madrid" target="_blank">Parque del Retiro</a></div>
+      </div>
+    </div>
+
+    <div class="recap-item highlight">
+      <div class="recap-icon">🚣</div>
+      <div class="item-body">
+        <div class="item-time">15:30</div>
+        <div class="item-title"><a href="https://maps.google.com/?q=Lago+del+Retiro+Madrid" target="_blank">Barca sul lago</a></div>
+        <div class="item-note">2 barche × 45 min — ~€8 a barca</div>
+      </div>
+    </div>
+
+    <div class="recap-item">
+      <div class="recap-icon">🏛️</div>
+      <div class="item-body">
+        <div class="item-time">16:30</div>
+        <div class="item-title"><a href="https://maps.google.com/?q=Palacio+de+Cristal+Madrid" target="_blank">Palacio de Cristal</a></div>
+        <div class="item-note">+ passeggiata nel parco</div>
+      </div>
+    </div>
+
+    <div class="recap-item highlight">
+      <div class="recap-icon">🌅</div>
+      <div class="item-body">
+        <div class="item-time">18:00</div>
+        <div class="item-title"><a href="https://maps.google.com/?q=Azotea+del+Circulo+de+Bellas+Artes+Madrid" target="_blank">Rooftop Azotea del Círculo de Bellas Artes</a></div>
+        <div class="item-note">~€6 ingresso · prenotare il tavolo in anticipo</div>
+      </div>
+    </div>
+
+    <div class="recap-day-label">Lunedì 18</div>
+
+    <div class="recap-item highlight">
+      <div class="recap-icon">👑</div>
+      <div class="item-body">
+        <div class="item-time">10:00 · opzione A</div>
+        <div class="item-title"><a href="https://maps.google.com/?q=Palacio+Real+Madrid" target="_blank">Palacio Real</a></div>
+        <div class="item-note">~1h 30 min · biglietti online in anticipo</div>
+      </div>
+    </div>
+
+    <div class="recap-item highlight">
+      <div class="recap-icon">⚽</div>
+      <div class="item-body">
+        <div class="item-time">10:00 · opzione B</div>
+        <div class="item-title"><a href="https://maps.google.com/?q=Estadio+Santiago+Bernabeu+Madrid" target="_blank">Tour Bernabéu</a></div>
+        <div class="item-note">~1h 30 min · taxi 20 min da centro</div>
+      </div>
+    </div>
+
+    <!-- RISTORANTI -->
+    <div class="recap-section-title">🍽️ Ristoranti</div>
+    <div class="recap-day-label">Sabato 16 · Cena</div>
+
+    <div class="recap-item">
+      <div class="recap-icon">🍷</div>
+      <div class="item-body">
+        <div class="item-title"><a href="https://maps.google.com/?q=Inclán+Brutal+Bar+Madrid" target="_blank">Inclán Brutal Bar</a></div>
+      </div>
+    </div>
+    <div class="recap-item">
+      <div class="recap-icon">🍷</div>
+      <div class="item-body">
+        <div class="item-title"><a href="https://maps.google.com/?q=Casa+Alberto+Madrid" target="_blank">Casa Alberto</a></div>
+      </div>
+    </div>
+    <div class="recap-item">
+      <div class="recap-icon">🍷</div>
+      <div class="item-body">
+        <div class="item-title"><a href="https://maps.google.com/?q=La+Musa+Latina+Madrid" target="_blank">La Musa Latina</a></div>
+      </div>
+    </div>
+    <div class="recap-item">
+      <div class="recap-icon">🍷</div>
+      <div class="item-body">
+        <div class="item-title"><a href="https://maps.google.com/?q=Taberna+Almería+Madrid" target="_blank">Taberna Almería</a></div>
+      </div>
+    </div>
+    <div class="recap-item">
+      <div class="recap-icon">🍷</div>
+      <div class="item-body">
+        <div class="item-title"><a href="https://maps.google.com/?q=Los+Galayos+Madrid" target="_blank">Los Galayos</a></div>
+      </div>
+    </div>
+    <div class="recap-item">
+      <div class="recap-icon">🍷</div>
+      <div class="item-body">
+        <div class="item-title"><a href="https://maps.google.com/?q=La+Finca+de+Susana+Madrid" target="_blank">La Finca de Susana</a></div>
+      </div>
+    </div>
+    <div class="recap-item">
+      <div class="recap-icon">🍷</div>
+      <div class="item-body">
+        <div class="item-title"><a href="https://maps.google.com/?q=Casa+González+Madrid" target="_blank">Casa González</a></div>
+      </div>
+    </div>
+
+    <div class="recap-day-label">Domenica 17 · Brunch</div>
+
+    <div class="recap-item">
+      <div class="recap-icon">☕</div>
+      <div class="item-body">
+        <div class="item-title"><a href="https://maps.google.com/?q=Superchulo+Gran+Via+Madrid" target="_blank">Superchulo Gran Vía</a></div>
+      </div>
+    </div>
+    <div class="recap-item">
+      <div class="recap-icon">☕</div>
+      <div class="item-body">
+        <div class="item-title"><a href="https://maps.google.com/?q=EatMyTrip+Malasaña+Madrid" target="_blank">EatMyTrip Malasaña</a></div>
+      </div>
+    </div>
+    <div class="recap-item">
+      <div class="recap-icon">☕</div>
+      <div class="item-body">
+        <div class="item-title"><a href="https://maps.google.com/?q=Le+Pralin+Madrid" target="_blank">Le Pralin</a></div>
+      </div>
+    </div>
+
+    <div class="recap-day-label">Domenica 17 · Cena</div>
+
+    <div class="recap-item">
+      <div class="recap-icon">🍷</div>
+      <div class="item-body">
+        <div class="item-title"><a href="https://maps.google.com/?q=Vinitus+Gran+Via+Madrid" target="_blank">Vinitus Gran Vía</a></div>
+      </div>
+    </div>
+    <div class="recap-item">
+      <div class="recap-icon">🍷</div>
+      <div class="item-body">
+        <div class="item-title"><a href="https://maps.google.com/?q=Diurno+Chueca+Madrid" target="_blank">Diurno Chueca</a></div>
+      </div>
+    </div>
+    <div class="recap-item">
+      <div class="recap-icon">🍷</div>
+      <div class="item-body">
+        <div class="item-title"><a href="https://maps.google.com/?q=La+Cerda+de+Chueca+Madrid" target="_blank">La Cerda de Chueca</a></div>
+      </div>
+    </div>
+    <div class="recap-item">
+      <div class="recap-icon">🍷</div>
+      <div class="item-body">
+        <div class="item-title"><a href="https://maps.google.com/?q=Fratelli+d%27Italia+Madrid" target="_blank">Fratelli d'Italia</a></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<button class="todo-toggle" onclick="toggleTodo()">
+  <span>🗓️</span>
+  <span>To-Do</span>
+</button>
+
+<!-- OVERLAY TODO + TRASPORTI -->
+<div class="recap-overlay" id="todo-overlay">
+  <div class="recap-header">
+    <h2>To-Do</h2>
+    <button class="recap-close" onclick="toggleTodo()">✕ Chiudi</button>
+  </div>
+  <div class="recap-body">
+
+    <!-- PRENOTAZIONI -->
+    <div class="recap-section-title">🎟️ Prenotazioni da fare</div>
+
+    <div class="todo-item" data-tid="t1" onclick="toggleTodoItem(this)">
+      <div class="t-check"></div>
+      <div class="t-body">
+        <div class="t-when">Subito</div>
+        <div class="t-what">Check-in online Wizz Air</div>
+        <div class="t-where">App Wizz Air</div>
+      </div>
+      <div class="t-prio">🔴</div>
+    </div>
+
+    <div class="todo-item" data-tid="t2" onclick="toggleTodoItem(this)">
+      <div class="t-check"></div>
+      <div class="t-body">
+        <div class="t-when">Subito</div>
+        <div class="t-what">Biglietti Teatro Kapital</div>
+        <div class="t-where"><a href="https://www.teatrokapital.com" target="_blank" onclick="event.stopPropagation()">teatrokapital.com</a></div>
+      </div>
+      <div class="t-prio">🔴</div>
+    </div>
+
+    <div class="todo-item" data-tid="t3" onclick="toggleTodoItem(this)">
+      <div class="t-check"></div>
+      <div class="t-body">
+        <div class="t-when">Subito</div>
+        <div class="t-what">Parcheggio Aeroporto Venezia</div>
+        <div class="t-where"><a href="https://maps.google.com/?q=Parcheggio+Aeroporto+Venezia+Marco+Polo" target="_blank" onclick="event.stopPropagation()">Venezia Marco Polo</a></div>
+      </div>
+      <div class="t-prio">🔴</div>
+    </div>
+
+    <div class="todo-item" data-tid="t4" onclick="toggleTodoItem(this)">
+      <div class="t-check"></div>
+      <div class="t-body">
+        <div class="t-when">Entro gio 14 mag</div>
+        <div class="t-what">Cena sabato sera</div>
+        <div class="t-where">Sito / telefono locale scelto</div>
+      </div>
+      <div class="t-prio">🟡</div>
+    </div>
+
+    <div class="todo-item" data-tid="t5" onclick="toggleTodoItem(this)">
+      <div class="t-check"></div>
+      <div class="t-body">
+        <div class="t-when">Entro ven 15 mag</div>
+        <div class="t-what">Deposito bagagli sabato mattina Madrid</div>
+        <div class="t-where"><a href="https://stasher.com" target="_blank" onclick="event.stopPropagation()">Stasher.com</a> · <a href="https://luggagehero.com" target="_blank" onclick="event.stopPropagation()">LuggageHero.com</a></div>
+      </div>
+      <div class="t-prio">🟡</div>
+    </div>
+
+    <div class="todo-item" data-tid="t6" onclick="toggleTodoItem(this)">
+      <div class="t-check"></div>
+      <div class="t-body">
+        <div class="t-when">Entro sab 16 mag</div>
+        <div class="t-what">Biglietti Palacio Real</div>
+        <div class="t-where"><a href="https://www.patrimonionacional.es" target="_blank" onclick="event.stopPropagation()">patrimonionacional.es</a></div>
+      </div>
+      <div class="t-prio">🟡</div>
+    </div>
+
+    <div class="todo-item" data-tid="t7" onclick="toggleTodoItem(this)">
+      <div class="t-check"></div>
+      <div class="t-body">
+        <div class="t-when">Entro sab 16 mag</div>
+        <div class="t-what">Tavolo rooftop Círculo de Bellas Artes</div>
+        <div class="t-where"><a href="https://www.circulobellasartes.com" target="_blank" onclick="event.stopPropagation()">circulobellasartes.com</a></div>
+      </div>
+      <div class="t-prio">🟡</div>
+    </div>
+
+    <div class="todo-item" data-tid="t8" onclick="toggleTodoItem(this)">
+      <div class="t-check"></div>
+      <div class="t-body">
+        <div class="t-when">Entro sab 16 mag</div>
+        <div class="t-what">Check-in online Ryanair</div>
+        <div class="t-where">App Ryanair</div>
+      </div>
+      <div class="t-prio">🔴</div>
+    </div>
+
+    <div class="todo-item" data-tid="t9" onclick="toggleTodoItem(this)">
+      <div class="t-check"></div>
+      <div class="t-body">
+        <div class="t-when">Dom 17 mag mattina</div>
+        <div class="t-what">Barca Retiro (2 slot × 2 barche)</div>
+        <div class="t-where">App Madrid Móvil</div>
+      </div>
+      <div class="t-prio">🟢</div>
+    </div>
+
+    <div class="todo-item" data-tid="t10" onclick="toggleTodoItem(this)">
+      <div class="t-check"></div>
+      <div class="t-body">
+        <div class="t-when">Dom 17 mag sera</div>
+        <div class="t-what">Biglietti Tour Bernabéu (se confermato)</div>
+        <div class="t-where"><a href="https://www.realmadrid.com" target="_blank" onclick="event.stopPropagation()">realmadrid.com</a></div>
+      </div>
+      <div class="t-prio">🟢</div>
+    </div>
+
+    <!-- TRASPORTI -->
+    <div class="recap-section-title">🚗🚇 Piano trasporti</div>
+
+    <div class="recap-day-label">Sab 16 — Da Barajas al centro</div>
+    <div class="transport-block">
+      <h3>✈️ Arrivo → Centro Madrid</h3>
+      <div class="transport-step">
+        <span class="t-icon">⚠️</span>
+        <span>Verificate il terminal sulla carta d'imbarco — <span class="t-bold">T4</span> oppure <span class="t-bold">T1-T2-T3</span> hanno stazioni metro diverse</span>
+      </div>
+      <div class="transport-step">
+        <span class="t-icon">🚇</span>
+        <span>Metro <span class="t-bold">Línea 8</span> → <span class="t-bold">Nuevos Ministerios</span> <span class="t-muted">~18 min</span></span>
+      </div>
+      <div class="transport-step">
+        <span class="t-icon">🔄</span>
+        <span>Cambio <span class="t-bold">Línea 6 o 10</span> → <span class="t-bold">Sol</span> <span class="t-muted">~10 min</span></span>
+      </div>
+      <div class="transport-step">
+        <span class="t-icon">💳</span>
+        <span>Pagamento contactless ai tornelli · <span class="t-bold">~€5 a testa</span></span>
+      </div>
+      <div class="transport-step">
+        <span class="t-icon">🏁</span>
+        <span>Arrivo in centro: <span class="t-bold">~10:00</span></span>
+      </div>
+    </div>
+
+    <div class="recap-day-label">Lun 18 — Dal centro a Barajas</div>
+    <div class="transport-block">
+      <h3>🏠 Centro Madrid → ✈️ Barajas T1</h3>
+      <div class="transport-step">
+        <span class="t-icon">⏰</span>
+        <span>Partenza da casa: <span class="t-bold">ore 14:00</span></span>
+      </div>
+      <div class="transport-step">
+        <span class="t-icon">🚶</span>
+        <span>A piedi fino a metro <span class="t-bold">Sol</span> <span class="t-muted">~5 min</span></span>
+      </div>
+      <div class="transport-step">
+        <span class="t-icon">🚇</span>
+        <span><span class="t-bold">Línea 1</span> Sol → Nuevos Ministerios <span class="t-muted">~5 min</span></span>
+      </div>
+      <div class="transport-step">
+        <span class="t-icon">🔄</span>
+        <span>Cambio <span class="t-bold">Línea 8</span> → <span class="t-bold">Aeropuerto T1-T2-T3</span> <span class="t-muted">~18 min</span></span>
+      </div>
+      <div class="transport-step">
+        <span class="t-icon">🏁</span>
+        <span>Arrivo in aeroporto: <span class="t-bold">~14:30</span> · Volo <span class="t-bold">16:55</span> Ryanair FR1206</span>
+      </div>
+      <div class="transport-alert">
+        <strong>🔴 Piano B:</strong> se con i bagagli il gruppo non se la sente, 2 taxi → ~€70 totali
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <header>
   <div class="header-flag">🇪🇸</div>
   <h1>Madrid</h1>
   <p class="subtitle">16 – 18 Maggio 2025</p>
 </header>
-
-<div class="progress-wrap">
-  <div class="progress-label">
-    <span>Progresso viaggio</span>
-    <span id="prog-text">0 / 0</span>
-  </div>
-  <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
-</div>
 
 <div class="day-nav">
   <button class="day-btn active" onclick="switchDay('sab', this)">Sab 16</button>
@@ -554,7 +1197,7 @@
       <div class="day-date">16 Maggio</div>
     </div>
 
-    <div class="item" data-id="s1" onclick="toggle(this)">
+    <div class="item" data-id="s1" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">03:00</div>
@@ -562,16 +1205,16 @@
       </div>
     </div>
 
-    <div class="item highlight" data-id="s2" onclick="toggle(this)">
+    <div class="item highlight" data-id="s2" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">06:00</div>
         <div class="item-title">✈️ Volo VCE → MAD</div>
-        <div class="item-note">W46729 — Venezia Tessera</div>
+        <div class="item-note"><a href="https://www.flightradar24.com/data/flights/w46729" target="_blank" style="color:var(--gold);text-decoration:none">W46729</a> — Venezia</div>
       </div>
     </div>
 
-    <div class="item" data-id="s3" onclick="toggle(this)">
+    <div class="item" data-id="s3" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">08:40</div>
@@ -579,7 +1222,7 @@
       </div>
     </div>
 
-    <div class="item" data-id="s4" onclick="toggle(this)">
+    <div class="item" data-id="s4" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">09:15</div>
@@ -588,7 +1231,7 @@
       </div>
     </div>
 
-    <div class="item" data-id="s5" onclick="toggle(this)">
+    <div class="item" data-id="s5" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">09:30</div>
@@ -596,7 +1239,7 @@
       </div>
     </div>
 
-    <div class="item" data-id="s6" onclick="toggle(this)">
+    <div class="item" data-id="s6" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">10:00</div>
@@ -604,7 +1247,7 @@
       </div>
     </div>
 
-    <div class="item" data-id="s7" onclick="toggle(this)">
+    <div class="item" data-id="s7" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">10:20</div>
@@ -612,7 +1255,7 @@
       </div>
     </div>
 
-    <div class="item" data-id="s8" onclick="toggle(this)">
+    <div class="item" data-id="s8" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">11:00</div>
@@ -620,7 +1263,7 @@
       </div>
     </div>
 
-    <div class="item" data-id="s9" onclick="toggle(this)">
+    <div class="item" data-id="s9" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">13:00</div>
@@ -628,7 +1271,7 @@
       </div>
     </div>
 
-    <div class="item" data-id="s10" onclick="toggle(this)">
+    <div class="item" data-id="s10" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">14:30</div>
@@ -636,7 +1279,7 @@
       </div>
     </div>
 
-    <div class="item" data-id="s11" onclick="toggle(this)">
+    <div class="item" data-id="s11" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">15:00</div>
@@ -645,7 +1288,7 @@
       </div>
     </div>
 
-    <div class="item" data-id="s12" onclick="toggle(this)">
+    <div class="item" data-id="s12" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">19:00</div>
@@ -653,7 +1296,7 @@
       </div>
     </div>
 
-    <div class="item" data-id="s13" onclick="toggle(this)">
+    <div class="item" data-id="s13" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">21:00</div>
@@ -665,13 +1308,18 @@
           </svg>
         </div>
         <div class="options-list" id="opts-s13">
-          Inclán Brutal Bar · Casa Alberto · La Musa Latina<br>
-          Taberna Almería · Los Galayos · La Finca de Susana · Casa González
+          <a href="https://maps.google.com/?q=Inclán+Brutal+Bar+Madrid" target="_blank" style="color:var(--gold);text-decoration:none">Inclán Brutal Bar</a> ·
+          <a href="https://maps.google.com/?q=Casa+Alberto+Madrid" target="_blank" style="color:var(--gold);text-decoration:none">Casa Alberto</a> ·
+          <a href="https://maps.google.com/?q=La+Musa+Latina+Madrid" target="_blank" style="color:var(--gold);text-decoration:none">La Musa Latina</a><br>
+          <a href="https://maps.google.com/?q=Taberna+Almería+Madrid" target="_blank" style="color:var(--gold);text-decoration:none">Taberna Almería</a> ·
+          <a href="https://maps.google.com/?q=Los+Galayos+Madrid" target="_blank" style="color:var(--gold);text-decoration:none">Los Galayos</a> ·
+          <a href="https://maps.google.com/?q=La+Finca+de+Susana+Madrid" target="_blank" style="color:var(--gold);text-decoration:none">La Finca de Susana</a> ·
+          <a href="https://maps.google.com/?q=Casa+González+Madrid" target="_blank" style="color:var(--gold);text-decoration:none">Casa González</a>
         </div>
       </div>
     </div>
 
-    <div class="item" data-id="s14" onclick="toggle(this)">
+    <div class="item" data-id="s14" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">22:30</div>
@@ -680,16 +1328,16 @@
       </div>
     </div>
 
-    <div class="item highlight" data-id="s15" onclick="toggle(this)">
+    <div class="item highlight" data-id="s15" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">00:30</div>
-        <div class="item-title">🎉 Teatro Kapital</div>
+        <div class="item-title">🎉 <a href="https://maps.google.com/?q=Teatro+Kapital+Calle+de+Atocha+125+Madrid" target="_blank" style="color:inherit;text-decoration:none">Teatro Kapital</a></div>
         <div class="item-note">Calle de Atocha 125 — 15 min a piedi o 5 min in taxi</div>
       </div>
     </div>
 
-    <div class="item" data-id="s16" onclick="toggle(this)">
+    <div class="item" data-id="s16" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">03:30 – 04:30</div>
@@ -705,7 +1353,7 @@
       <div class="day-date">17 Maggio</div>
     </div>
 
-    <div class="item" data-id="d1" onclick="toggle(this)">
+    <div class="item" data-id="d1" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">12:00 – 13:00</div>
@@ -713,7 +1361,7 @@
       </div>
     </div>
 
-    <div class="item" data-id="d2" onclick="toggle(this)">
+    <div class="item" data-id="d2" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">13:00</div>
@@ -725,12 +1373,14 @@
           </svg>
         </div>
         <div class="options-list" id="opts-d2">
-          Superchulo Gran Vía · EatMyTrip Malasaña · Le Pralin
+          <a href="https://maps.google.com/?q=Superchulo+Gran+Via+Madrid" target="_blank" style="color:var(--gold);text-decoration:none">Superchulo Gran Vía</a> ·
+          <a href="https://maps.google.com/?q=EatMyTrip+Malasaña+Madrid" target="_blank" style="color:var(--gold);text-decoration:none">EatMyTrip Malasaña</a> ·
+          <a href="https://maps.google.com/?q=Le+Pralin+Madrid" target="_blank" style="color:var(--gold);text-decoration:none">Le Pralin</a>
         </div>
       </div>
     </div>
 
-    <div class="item" data-id="d3" onclick="toggle(this)">
+    <div class="item" data-id="d3" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">15:00</div>
@@ -739,7 +1389,7 @@
       </div>
     </div>
 
-    <div class="item highlight" data-id="d4" onclick="toggle(this)">
+    <div class="item highlight" data-id="d4" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">15:30</div>
@@ -748,7 +1398,7 @@
       </div>
     </div>
 
-    <div class="item" data-id="d5" onclick="toggle(this)">
+    <div class="item" data-id="d5" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">16:30</div>
@@ -756,16 +1406,16 @@
       </div>
     </div>
 
-    <div class="item highlight" data-id="d6" onclick="toggle(this)">
+    <div class="item highlight" data-id="d6" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">18:00</div>
-        <div class="item-title">🌅 Rooftop Azotea del Círculo de Bellas Artes <span class="tag tag-book">Prenotare</span></div>
+        <div class="item-title">🌅 <a href="https://maps.google.com/?q=Azotea+del+Circulo+de+Bellas+Artes+Madrid" target="_blank" style="color:inherit;text-decoration:none">Rooftop Azotea del Círculo de Bellas Artes</a> <span class="tag tag-book">Prenotare</span></div>
         <div class="item-note">~€6 ingresso. Prenotare il tavolo in anticipo.</div>
       </div>
     </div>
 
-    <div class="item" data-id="d7" onclick="toggle(this)">
+    <div class="item" data-id="d7" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">20:30</div>
@@ -777,12 +1427,15 @@
           </svg>
         </div>
         <div class="options-list" id="opts-d7">
-          Vinitus Gran Vía · Diurno Chueca · La Cerda de Chueca · Fratelli d'Italia
+          <a href="https://maps.google.com/?q=Vinitus+Gran+Via+Madrid" target="_blank" style="color:var(--gold);text-decoration:none">Vinitus Gran Vía</a> ·
+          <a href="https://maps.google.com/?q=Diurno+Chueca+Madrid" target="_blank" style="color:var(--gold);text-decoration:none">Diurno Chueca</a> ·
+          <a href="https://maps.google.com/?q=La+Cerda+de+Chueca+Madrid" target="_blank" style="color:var(--gold);text-decoration:none">La Cerda de Chueca</a> ·
+          <a href="https://maps.google.com/?q=Fratelli+d%27Italia+Madrid" target="_blank" style="color:var(--gold);text-decoration:none">Fratelli d'Italia</a>
         </div>
       </div>
     </div>
 
-    <div class="item" data-id="d8" onclick="toggle(this)">
+    <div class="item" data-id="d8" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">Dopo cena</div>
@@ -799,7 +1452,7 @@
       <div class="day-date">18 Maggio</div>
     </div>
 
-    <div class="item" data-id="l1" onclick="toggle(this)">
+    <div class="item" data-id="l1" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">08:30</div>
@@ -807,34 +1460,25 @@
       </div>
     </div>
 
-    <div class="item highlight" data-id="l2" onclick="toggle(this)">
+    <div class="item highlight" data-id="l2" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">10:00</div>
-        <div class="item-title">👑 Palacio Real <span class="tag tag-book">Prenotare online</span></div>
-        <div class="item-note">~1h 30 min. Acquistare i biglietti online in anticipo.</div>
+        <div class="item-title">🗺️ Scegli la tua tappa <span class="tag tag-opt">Opzionale</span></div>
+        <div class="options-toggle" onclick="toggleOpts(event,'opts-l2')">
+          Opzioni
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="options-list" id="opts-l2">
+          <a href="https://maps.google.com/?q=Palacio+Real+Madrid" target="_blank" style="color:var(--gold);text-decoration:none">👑 Palacio Real</a> <span style="color:var(--muted);font-size:0.75rem">~1h 30 min · biglietti online</span><br>
+          <a href="https://maps.google.com/?q=Estadio+Santiago+Bernabeu+Madrid" target="_blank" style="color:var(--gold);text-decoration:none">⚽ Tour Bernabéu</a> <span style="color:var(--muted);font-size:0.75rem">~1h 30 min · taxi 20 min</span>
+        </div>
       </div>
     </div>
 
-    <div class="item" data-id="l3" onclick="toggle(this)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
-      <div class="item-body">
-        <div class="item-time">11:30</div>
-        <div class="item-title">✅ Check-out</div>
-        <div class="item-note">Lasciare bagagli in alloggio o deposito (Stasher / LuggageHero)</div>
-      </div>
-    </div>
-
-    <div class="item" data-id="l4" onclick="toggle(this)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
-      <div class="item-body">
-        <div class="item-time">12:00</div>
-        <div class="item-title">⚽ Tour Bernabéu <span class="tag tag-opt">Opzionale</span></div>
-        <div class="item-note">Taxi ~20 min, durata ~1h 30 min</div>
-      </div>
-    </div>
-
-    <div class="item" data-id="l5" onclick="toggle(this)">
+    <div class="item" data-id="l5" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">14:00</div>
@@ -842,7 +1486,7 @@
       </div>
     </div>
 
-    <div class="item" data-id="l6" onclick="toggle(this)">
+    <div class="item" data-id="l6" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">14:30</div>
@@ -851,19 +1495,17 @@
       </div>
     </div>
 
-    <div class="item highlight" data-id="l7" onclick="toggle(this)">
+    <div class="item highlight" data-id="l7" onclick="toggle(this, event)">
       <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">16:55</div>
         <div class="item-title">✈️ Volo MAD → VCE</div>
-        <div class="item-note">FR1206 — Ryanair</div>
+        <div class="item-note"><a href="https://www.flightradar24.com/data/flights/fr1206" target="_blank" style="color:var(--gold);text-decoration:none">FR1206</a> — Ryanair</div>
       </div>
     </div>
 
-    <div class="warning-box">
-      <strong>⚠️ Nota Lunedì</strong>
-      Palacio Real e Bernabéu insieme sono fattibili ma stretti. Se volete stare tranquilli, scegliete uno dei due — il Palacio Real è più centrale e più "Madrid".
-    </div>
+
+
   </div>
 
 </div><!-- end container -->
@@ -951,10 +1593,14 @@
       if (done.includes(id)) el.classList.add('done');
       else el.classList.remove('done');
     });
-    updateStats();
+    const doneCount = done.filter(id =>
+      document.querySelector('[data-id="' + id + '"]')
+    ).length;
+    document.getElementById('done-count').textContent = doneCount;
   }
 
-  function toggle(el) {
+  function toggle(el, event) {
+    if (event && event.target.closest('a')) return;
     const id = el.dataset.id;
     const isNowChecked = !done.includes(id);
     if (isNowChecked) done.push(id);
@@ -978,15 +1624,6 @@
     btn.classList.add('active');
   }
 
-  function updateStats() {
-    const total = document.querySelectorAll('.item').length;
-    const doneCount = done.filter(id =>
-      document.querySelector('[data-id="' + id + '"]')
-    ).length;
-    document.getElementById('done-count').textContent = doneCount;
-    document.getElementById('prog-text').textContent = doneCount + ' / ' + total;
-    document.getElementById('prog-fill').style.width = total ? (doneCount / total * 100) + '%' : '0%';
-  }
 
   async function resetAll() {
     if (!confirm('Resettare tutte le attività per tutti?')) return;
@@ -1009,6 +1646,26 @@
   }
 
   // ── TEMA ────────────────────────────────────────────────────────
+  function toggleRecap() {
+    const overlay = document.getElementById('recap-overlay');
+    overlay.classList.toggle('open');
+    document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
+  }
+
+  function toggleTodo() {
+    const overlay = document.getElementById('todo-overlay');
+    overlay.classList.toggle('open');
+    document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
+  }
+
+  function toggleTodoItem(el) {
+    if (event && event.target.closest('a')) return;
+    el.classList.toggle('done');
+    const id = el.dataset.tid;
+    const isDone = el.classList.contains('done');
+    saveToSupabase(id, isDone);
+  }
+
   function applyTheme(theme) {
     const isLight = theme === 'light';
     document.documentElement.classList.toggle('light', isLight);
