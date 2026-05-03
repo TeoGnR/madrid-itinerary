@@ -429,13 +429,21 @@
     margin: 4px 0;
   }
 
-  /* THEME TOGGLE */
+  /* CONTROLLI NELL'HEADER */
+  .header-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    gap: 8px;
+  }
+  .header-controls-left { display: flex; gap: 8px; }
+
+  /* PULSANTI */
+  .recap-toggle,
+  .todo-toggle,
   .theme-toggle {
-    position: fixed;
-    top: 16px;
-    right: 16px;
-    z-index: 200;
-    background: var(--surface);
+    background: rgba(255,255,255,0.06);
     border: 1px solid var(--border);
     border-radius: 40px;
     padding: 7px 14px;
@@ -449,49 +457,19 @@
     align-items: center;
     gap: 7px;
     transition: all 0.25s ease;
-    backdrop-filter: blur(8px);
+    white-space: nowrap;
   }
-
-  .theme-toggle:hover {
-    border-color: var(--gold);
-    color: var(--gold);
-  }
-
-  .theme-toggle .theme-icon {
-    font-size: 0.9rem;
-    line-height: 1;
-  }
+  .recap-toggle:hover,
+  .todo-toggle:hover,
+  .theme-toggle:hover { border-color: var(--gold); color: var(--gold); }
+  .theme-toggle .theme-icon { font-size: 0.9rem; line-height: 1; }
 
   @media (max-width: 480px) {
     h1 { font-size: 2.2rem; }
     .day-btn { padding: 8px 14px; font-size: 0.75rem; }
-    .theme-toggle { top: 12px; right: 12px; padding: 6px 11px; }
-    .recap-toggle { top: 12px; left: 12px; padding: 6px 11px; }
+    .recap-toggle, .todo-toggle, .theme-toggle { padding: 6px 10px; font-size: 0.72rem; }
   }
 
-  /* RIEPILOGO BUTTON */
-  .recap-toggle {
-    position: fixed;
-    top: 16px;
-    left: 16px;
-    z-index: 200;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 40px;
-    padding: 7px 14px;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 500;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    transition: all 0.25s ease;
-    backdrop-filter: blur(8px);
-  }
-  .recap-toggle:hover { border-color: var(--gold); color: var(--gold); }
 
   /* RIEPILOGO OVERLAY */
   .recap-overlay {
@@ -606,34 +584,6 @@
   .recap-item .item-title a:hover { text-decoration: underline; }
   .recap-item .item-note a { color: var(--gold); text-decoration: none; }
   .recap-item .item-note a:hover { text-decoration: underline; }
-
-  /* SECONDO PULSANTE FISSO */
-  .todo-toggle {
-    position: fixed;
-    top: 56px;
-    left: 16px;
-    z-index: 200;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 40px;
-    padding: 7px 14px;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 500;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    transition: all 0.25s ease;
-    backdrop-filter: blur(8px);
-  }
-  .todo-toggle:hover { border-color: var(--gold); color: var(--gold); }
-
-  @media (max-width: 480px) {
-    .todo-toggle { top: 52px; left: 12px; padding: 6px 11px; }
-  }
 
   /* TODO ITEM — spuntabile */
   .todo-item {
@@ -769,15 +719,6 @@
 </head>
 <body>
 
-<button class="recap-toggle" onclick="toggleRecap()">
-  <span>📋</span>
-  <span>Riepilogo</span>
-</button>
-
-<button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">
-  <span class="theme-icon" id="theme-icon">☀️</span>
-  <span id="theme-label">Chiaro</span>
-</button>
 
 <!-- OVERLAY RIEPILOGO -->
 <div class="recap-overlay" id="recap-overlay">
@@ -1001,11 +942,6 @@
   </div>
 </div>
 
-<button class="todo-toggle" onclick="toggleTodo()">
-  <span>🗓️</span>
-  <span>To-Do</span>
-</button>
-
 <!-- OVERLAY TODO + TRASPORTI -->
 <div class="recap-overlay" id="todo-overlay">
   <div class="recap-header">
@@ -1177,6 +1113,22 @@
 </div>
 
 <header>
+  <div class="header-controls">
+    <div class="header-controls-left">
+      <button class="recap-toggle" onclick="toggleRecap()">
+        <span>📋</span>
+        <span>Riepilogo</span>
+      </button>
+      <button class="todo-toggle" onclick="toggleTodo()">
+        <span>🗓️</span>
+        <span>To-Do</span>
+      </button>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">
+      <span class="theme-icon" id="theme-icon">☀️</span>
+      <span id="theme-label">Chiaro</span>
+    </button>
+  </div>
   <div class="header-flag">🇪🇸</div>
   <h1>Madrid</h1>
   <p class="subtitle">16 – 18 Maggio 2025</p>
@@ -1649,13 +1601,11 @@
   function toggleRecap() {
     const overlay = document.getElementById('recap-overlay');
     overlay.classList.toggle('open');
-    document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
   }
 
   function toggleTodo() {
     const overlay = document.getElementById('todo-overlay');
     overlay.classList.toggle('open');
-    document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
   }
 
   function toggleTodoItem(el) {
