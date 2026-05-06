@@ -7,21 +7,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0e0c0a;
-    --surface: #1a1714;
-    --surface2: #252019;
+    --bg: #182845;
+    --surface: #1e3256;
+    --surface2: #253d63;
     --gold: #c9a84c;
     --gold-light: #e8c96a;
     --red: #c94c4c;
     --cream: #f0e8d8;
-    --muted: #7a7060;
+    --muted: #6b8aaa;
     --text: #e8dcc8;
-    --done: #3a3830;
-    --done-text: #5a5448;
-    --border: #2e2820;
-    --border-item: #1e1c18;
-    --checkbox-border: #3a3830;
-    --stats-bg: rgba(14,12,10,0.96);
+    --done: #1e3256;
+    --done-text: #4a6a8a;
+    --border: #213660;
+    --border-item: #1e3050;
+    --checkbox-border: #2a4570;
+    --stats-bg: rgba(24,40,69,0.96);
     --header-glow: rgba(201,168,76,0.12);
     --highlight-bg: rgba(201,168,76,0.06);
     --highlight-border: rgba(201,168,76,0.18);
@@ -155,7 +155,7 @@
   .day-btn.active {
     background: var(--gold);
     border-color: var(--gold);
-    color: #0e0c0a;
+    color: #182845;
     font-weight: 500;
   }
 
@@ -212,14 +212,12 @@
   .item {
     display: flex;
     align-items: flex-start;
-    gap: 16px;
-    padding: 14px 0;
+    gap: 0;
+    padding: 14px 8px;
     border-bottom: 1px solid #1e1c18;
     cursor: pointer;
     transition: background 0.2s;
     border-radius: 6px;
-    padding-left: 8px;
-    padding-right: 8px;
     -webkit-user-select: none;
     user-select: none;
     touch-action: manipulation;
@@ -252,36 +250,7 @@
     color: var(--gold-light);
   }
 
-  /* Checkbox */
-  .checkbox {
-    flex-shrink: 0;
-    width: 20px;
-    height: 20px;
-    border: 1.5px solid #3a3830;
-    border-radius: 50%;
-    margin-top: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-  }
 
-  .item.done .checkbox {
-    visibility: hidden;
-  }
-
-  .checkbox-inner {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--bg);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-
-  .item.done .checkbox-inner {
-    opacity: 1;
-  }
 
   .item-body {
     flex: 1;
@@ -789,7 +758,6 @@
     </div>
 
     <div class="item" data-id="s1" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">03:00</div>
         <div class="item-title">🚗 Partenza da Tregnago</div>
@@ -797,7 +765,6 @@
     </div>
 
     <div class="item highlight" data-id="s2" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">06:00</div>
         <div class="item-title">✈️ Volo VCE → MAD</div>
@@ -806,7 +773,6 @@
     </div>
 
     <div class="item" data-id="s3" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">08:40</div>
         <div class="item-title">🛬 Atterraggio Barajas</div>
@@ -814,7 +780,6 @@
     </div>
 
     <div class="item" data-id="s4" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">09:15</div>
         <div class="item-title">🚇 Metro Línea 8 verso centro</div>
@@ -823,7 +788,6 @@
     </div>
 
     <div class="item" data-id="s5" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">09:30</div>
         <div class="item-title">🏠 Deposito zaini in alloggio + caffè</div>
@@ -831,7 +795,6 @@
     </div>
 
     <div class="item" data-id="s6" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">10:00</div>
         <div class="item-title">🏛️ Puerta del Sol</div>
@@ -839,7 +802,6 @@
     </div>
 
     <div class="item" data-id="s7" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">10:20</div>
         <div class="item-title">🏟️ Plaza Mayor</div>
@@ -847,7 +809,6 @@
     </div>
 
     <div class="item" data-id="s8" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">11:00</div>
         <div class="item-title">🥩 Mercado de San Miguel — aperitivo / brunch</div>
@@ -855,7 +816,6 @@
     </div>
 
     <div class="item" data-id="s9" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">13:00</div>
         <div class="item-title">🍽️ Pranzo in zona</div>
@@ -863,7 +823,6 @@
     </div>
 
     <div class="item" data-id="s10" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">14:30</div>
         <div class="item-title">🏠 Rientro alloggio</div>
@@ -871,7 +830,6 @@
     </div>
 
     <div class="item" data-id="s11" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">15:00</div>
         <div class="item-title">✅ Check-in → 🛌 Riposo</div>
@@ -880,7 +838,6 @@
     </div>
 
     <div class="item" data-id="s12" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">19:00</div>
         <div class="item-title">🚿 Docce + preparazione</div>
@@ -888,7 +845,6 @@
     </div>
 
     <div class="item" data-id="s13" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">21:00</div>
         <div class="item-title">🍽️ Cena</div>
@@ -911,7 +867,6 @@
     </div>
 
     <div class="item" data-id="s14" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">22:30</div>
         <div class="item-title">🍹 Pre-serata</div>
@@ -920,7 +875,6 @@
     </div>
 
     <div class="item highlight" data-id="s15" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">00:30</div>
         <div class="item-title">🎉 <a href="https://maps.google.com/?q=Teatro+Kapital+Calle+de+Atocha+125+Madrid" target="_blank" style="color:inherit;text-decoration:none">Teatro Kapital</a></div>
@@ -929,7 +883,6 @@
     </div>
 
     <div class="item" data-id="s16" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">03:30 – 04:30</div>
         <div class="item-title">🏠 Rientro</div>
@@ -945,7 +898,6 @@
     </div>
 
     <div class="item" data-id="d1" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">12:00 – 13:00</div>
         <div class="item-title">☀️ Sveglia</div>
@@ -953,7 +905,6 @@
     </div>
 
     <div class="item" data-id="d2" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">13:00</div>
         <div class="item-title">🍳 Brunch</div>
@@ -972,7 +923,6 @@
     </div>
 
     <div class="item" data-id="d3" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">15:00</div>
         <div class="item-title">🌿 Parque del Retiro</div>
@@ -981,7 +931,6 @@
     </div>
 
     <div class="item highlight" data-id="d4" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">15:30</div>
         <div class="item-title">🚣 Barca sul lago <span class="tag tag-book">Prenotare</span></div>
@@ -990,7 +939,6 @@
     </div>
 
     <div class="item" data-id="d5" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">16:30</div>
         <div class="item-title">🏛️ Palacio de Cristal + passeggiata nel parco</div>
@@ -998,7 +946,6 @@
     </div>
 
     <div class="item highlight" data-id="d6" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">18:00</div>
         <div class="item-title">🌅 <a href="https://maps.google.com/?q=Azotea+del+Circulo+de+Bellas+Artes+Madrid" target="_blank" style="color:inherit;text-decoration:none">Rooftop Azotea del Círculo de Bellas Artes</a> <span class="tag tag-book">Prenotare</span></div>
@@ -1007,7 +954,6 @@
     </div>
 
     <div class="item" data-id="d7" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">20:30</div>
         <div class="item-title">🍽️ Cena zona Gran Vía / Chueca</div>
@@ -1027,7 +973,6 @@
     </div>
 
     <div class="item" data-id="d8" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">Dopo cena</div>
         <div class="item-title">🌃 Serata libera</div>
@@ -1044,7 +989,6 @@
     </div>
 
     <div class="item" data-id="l1" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">08:30</div>
         <div class="item-title">☕ Colazione</div>
@@ -1052,7 +996,6 @@
     </div>
 
     <div class="item highlight" data-id="l2" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">10:00</div>
         <div class="item-title">🗺️ Scegli la tua tappa <span class="tag tag-opt">Opzionale</span></div>
@@ -1070,7 +1013,6 @@
     </div>
 
     <div class="item" data-id="l5" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">14:00</div>
         <div class="item-title">🥙 Pranzo veloce + recupero bagagli</div>
@@ -1078,7 +1020,6 @@
     </div>
 
     <div class="item" data-id="l6" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">14:30</div>
         <div class="item-title">🚕 Taxi verso Barajas T1</div>
@@ -1087,7 +1028,6 @@
     </div>
 
     <div class="item highlight" data-id="l7" onclick="toggle(this, event)">
-      <div class="checkbox"><div class="checkbox-inner"></div></div>
       <div class="item-body">
         <div class="item-time">16:55</div>
         <div class="item-title">✈️ Volo MAD → VCE</div>
@@ -1112,10 +1052,9 @@
   const SB_URL = 'https://wjkpmlldjwrpmtjezvsy.supabase.co';
   const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indqa3BtbGxkandycG10amV6dnN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NzUxNzcsImV4cCI6MjA5MzE1MTE3N30.2_58rgeiNH-dz_6CHf6qBGAC94q82hLqJDQ6S-61AAQ';
   const HEADERS = { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY };
-
   const THEME_KEY_STORE = 'madrid_theme_v1';
 
-  // Safe localStorage wrapper (fallback in-memory per Safari privato)
+  // Safe localStorage wrapper
   const store = (function() {
     let mem = {};
     let ok = true;
@@ -1132,7 +1071,8 @@
     };
   })();
 
-  let done = []; // array degli item_id spuntati
+  let done = [];     // item_id spuntati nell'itinerario
+  let todoDone = []; // item_id spuntati nei To-Do
 
   // ── INDICATORE SYNC ─────────────────────────────────────────────
   function setSyncStatus(state) {
@@ -1147,26 +1087,11 @@
     el.innerHTML = '<span style="color:' + s.color + ';font-size:0.7rem">' + s.icon + '</span> ' + s.label;
   }
 
-  // ── CARICA DA SUPABASE ───────────────────────────────────────────
-  async function loadFromSupabase() {
-    setSyncStatus('loading');
-    try {
-      const res = await fetch(SB_URL + '/rest/v1/checklist?select=item_id,checked', { headers: HEADERS });
-      if (!res.ok) throw new Error();
-      const rows = await res.json();
-      done = rows.filter(r => r.checked).map(r => r.item_id);
-      setSyncStatus('ok');
-    } catch(e) {
-      setSyncStatus('error');
-    }
-    applyState();
-  }
-
   // ── SALVA SU SUPABASE ────────────────────────────────────────────
-  async function saveToSupabase(itemId, checked) {
+  async function saveToTable(table, itemId, checked) {
     setSyncStatus('loading');
     try {
-      const res = await fetch(SB_URL + '/rest/v1/checklist', {
+      const res = await fetch(SB_URL + '/rest/v1/' + table, {
         method: 'POST',
         headers: { ...HEADERS, 'Prefer': 'resolution=merge-duplicates' },
         body: JSON.stringify({ item_id: itemId, checked: checked, updated_at: new Date().toISOString() })
@@ -1178,34 +1103,74 @@
     }
   }
 
+  // ── CARICA DA SUPABASE ───────────────────────────────────────────
+  async function loadFromSupabase() {
+    setSyncStatus('loading');
+    try {
+      const [r1, r2] = await Promise.all([
+        fetch(SB_URL + '/rest/v1/checklist?select=item_id,checked', { headers: HEADERS }),
+        fetch(SB_URL + '/rest/v1/todo?select=item_id,checked', { headers: HEADERS })
+      ]);
+      if (!r1.ok || !r2.ok) throw new Error();
+      const rows1 = await r1.json();
+      const rows2 = await r2.json();
+      done     = rows1.filter(r => r.checked).map(r => r.item_id);
+      todoDone = rows2.filter(r => r.checked).map(r => r.item_id);
+      setSyncStatus('ok');
+    } catch(e) {
+      setSyncStatus('error');
+    }
+    applyState();
+    applyTodoState();
+  }
+
+  // ── STATO ITINERARIO ─────────────────────────────────────────────
   function applyState() {
     document.querySelectorAll('.item').forEach(el => {
       const id = el.dataset.id;
       if (done.includes(id)) el.classList.add('done');
       else el.classList.remove('done');
     });
-    const doneCount = done.filter(id =>
-      document.querySelector('[data-id="' + id + '"]')
-    ).length;
+    const doneCount = done.filter(id => document.querySelector('[data-id="' + id + '"]')).length;
     document.getElementById('done-count').textContent = doneCount;
   }
 
-  function toggle(el, event) {
-    if (event && event.target.closest('a')) return;
+  function toggle(el, e) {
+    if (e && e.target.closest('a')) return;
     const id = el.dataset.id;
     const isNowChecked = !done.includes(id);
     if (isNowChecked) done.push(id);
     else done = done.filter(d => d !== id);
     applyState();
-    saveToSupabase(id, isNowChecked);
+    saveToTable('checklist', id, isNowChecked);
   }
 
+  // ── STATO TO-DO ──────────────────────────────────────────────────
+  function applyTodoState() {
+    document.querySelectorAll('.todo-item').forEach(el => {
+      const id = el.dataset.tid;
+      if (todoDone.includes(id)) el.classList.add('done');
+      else el.classList.remove('done');
+    });
+  }
+
+  function toggleTodoItem(el, e) {
+    if (e && e.target.closest('a')) return;
+    const id = el.dataset.tid;
+    const isNowChecked = !todoDone.includes(id);
+    if (isNowChecked) todoDone.push(id);
+    else todoDone = todoDone.filter(d => d !== id);
+    applyTodoState();
+    saveToTable('todo', id, isNowChecked);
+  }
+
+  // ── ALTRI CONTROLLI ──────────────────────────────────────────────
   function toggleOpts(e, id) {
     e.stopPropagation();
     const list = document.getElementById(id);
-    const toggle = e.currentTarget;
+    const btn = e.currentTarget;
     list.classList.toggle('open');
-    toggle.classList.toggle('open');
+    btn.classList.toggle('open');
   }
 
   function switchDay(day, btn) {
@@ -1215,52 +1180,52 @@
     btn.classList.add('active');
   }
 
-
-  async function resetAll() {
-    if (!confirm('Resettare tutte le attività per tutti?')) return;
-    setSyncStatus('loading');
-    try {
-      // Resetta tutti gli item su Supabase
-      const allIds = Array.from(document.querySelectorAll('.item')).map(el => el.dataset.id);
-      await fetch(SB_URL + '/rest/v1/checklist', {
-        method: 'POST',
-        headers: { ...HEADERS, 'Prefer': 'resolution=merge-duplicates' },
-        body: JSON.stringify(allIds.map(id => ({ item_id: id, checked: false, updated_at: new Date().toISOString() })))
-      });
-      done = [];
-      setSyncStatus('ok');
-    } catch(e) {
-      done = [];
-      setSyncStatus('error');
-    }
-    applyState();
-  }
-
-  // ── TEMA ────────────────────────────────────────────────────────
   function toggleAcc(header, bodyId) {
-    const body = document.getElementById(bodyId);
     header.classList.toggle('open');
-    body.classList.toggle('open');
+    document.getElementById(bodyId).classList.toggle('open');
   }
 
   function toggleRecap() {
     const overlay = document.getElementById('recap-overlay');
     overlay.classList.toggle('open');
+    document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
   }
 
   function toggleTodo() {
     const overlay = document.getElementById('todo-overlay');
     overlay.classList.toggle('open');
+    document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
   }
 
-  function toggleTodoItem(el) {
-    if (event && event.target.closest('a')) return;
-    el.classList.toggle('done');
-    const id = el.dataset.tid;
-    const isDone = el.classList.contains('done');
-    saveToSupabase(id, isDone);
+  async function resetAll() {
+    if (!confirm('Resettare tutte le attività per tutti?')) return;
+    setSyncStatus('loading');
+    try {
+      const allIds = Array.from(document.querySelectorAll('.item')).map(el => el.dataset.id);
+      const allTids = Array.from(document.querySelectorAll('.todo-item')).map(el => el.dataset.tid);
+      await Promise.all([
+        fetch(SB_URL + '/rest/v1/checklist', {
+          method: 'POST',
+          headers: { ...HEADERS, 'Prefer': 'resolution=merge-duplicates' },
+          body: JSON.stringify(allIds.map(id => ({ item_id: id, checked: false, updated_at: new Date().toISOString() })))
+        }),
+        fetch(SB_URL + '/rest/v1/todo', {
+          method: 'POST',
+          headers: { ...HEADERS, 'Prefer': 'resolution=merge-duplicates' },
+          body: JSON.stringify(allTids.map(id => ({ item_id: id, checked: false, updated_at: new Date().toISOString() })))
+        })
+      ]);
+      done = []; todoDone = [];
+      setSyncStatus('ok');
+    } catch(e) {
+      done = []; todoDone = [];
+      setSyncStatus('error');
+    }
+    applyState();
+    applyTodoState();
   }
 
+  // ── TEMA ─────────────────────────────────────────────────────────
   function applyTheme(theme) {
     const isLight = theme === 'light';
     document.documentElement.classList.toggle('light', isLight);
@@ -1281,7 +1246,7 @@
     if (saved) applyTheme(saved);
   })();
 
-  loadFromSupabase(); // carica stato dal database all'avvio
+  loadFromSupabase();
 </script>
 <!-- OVERLAY RIEPILOGO -->
 <div class="recap-overlay" id="recap-overlay">
@@ -1469,7 +1434,7 @@
     <!-- PRENOTAZIONI -->
     <div class="recap-section-title">🎟️ Prenotazioni da fare</div>
 
-    <div class="todo-item" data-tid="t1" onclick="toggleTodoItem(this)">
+    <div class="todo-item" data-tid="t1" onclick="toggleTodoItem(this, event)">
       <div class="t-check"></div>
       <div class="t-body">
         <div class="t-when">Subito</div>
@@ -1479,7 +1444,7 @@
       <div class="t-prio">🔴</div>
     </div>
 
-    <div class="todo-item" data-tid="t2" onclick="toggleTodoItem(this)">
+    <div class="todo-item" data-tid="t2" onclick="toggleTodoItem(this, event)">
       <div class="t-check"></div>
       <div class="t-body">
         <div class="t-when">Subito</div>
@@ -1489,7 +1454,7 @@
       <div class="t-prio">🔴</div>
     </div>
 
-    <div class="todo-item" data-tid="t3" onclick="toggleTodoItem(this)">
+    <div class="todo-item" data-tid="t3" onclick="toggleTodoItem(this, event)">
       <div class="t-check"></div>
       <div class="t-body">
         <div class="t-when">Subito</div>
@@ -1499,7 +1464,7 @@
       <div class="t-prio">🔴</div>
     </div>
 
-    <div class="todo-item" data-tid="t4" onclick="toggleTodoItem(this)">
+    <div class="todo-item" data-tid="t4" onclick="toggleTodoItem(this, event)">
       <div class="t-check"></div>
       <div class="t-body">
         <div class="t-when">Entro gio 14 mag</div>
@@ -1509,7 +1474,7 @@
       <div class="t-prio">🟡</div>
     </div>
 
-    <div class="todo-item" data-tid="t5" onclick="toggleTodoItem(this)">
+    <div class="todo-item" data-tid="t5" onclick="toggleTodoItem(this, event)">
       <div class="t-check"></div>
       <div class="t-body">
         <div class="t-when">Entro ven 15 mag</div>
@@ -1519,7 +1484,7 @@
       <div class="t-prio">🟡</div>
     </div>
 
-    <div class="todo-item" data-tid="t6" onclick="toggleTodoItem(this)">
+    <div class="todo-item" data-tid="t6" onclick="toggleTodoItem(this, event)">
       <div class="t-check"></div>
       <div class="t-body">
         <div class="t-when">Entro sab 16 mag</div>
@@ -1529,7 +1494,7 @@
       <div class="t-prio">🟡</div>
     </div>
 
-    <div class="todo-item" data-tid="t7" onclick="toggleTodoItem(this)">
+    <div class="todo-item" data-tid="t7" onclick="toggleTodoItem(this, event)">
       <div class="t-check"></div>
       <div class="t-body">
         <div class="t-when">Entro sab 16 mag</div>
@@ -1539,7 +1504,7 @@
       <div class="t-prio">🟡</div>
     </div>
 
-    <div class="todo-item" data-tid="t8" onclick="toggleTodoItem(this)">
+    <div class="todo-item" data-tid="t8" onclick="toggleTodoItem(this, event)">
       <div class="t-check"></div>
       <div class="t-body">
         <div class="t-when">Entro sab 16 mag</div>
@@ -1549,7 +1514,7 @@
       <div class="t-prio">🔴</div>
     </div>
 
-    <div class="todo-item" data-tid="t9" onclick="toggleTodoItem(this)">
+    <div class="todo-item" data-tid="t9" onclick="toggleTodoItem(this, event)">
       <div class="t-check"></div>
       <div class="t-body">
         <div class="t-when">Dom 17 mag mattina</div>
@@ -1559,7 +1524,7 @@
       <div class="t-prio">🟢</div>
     </div>
 
-    <div class="todo-item" data-tid="t10" onclick="toggleTodoItem(this)">
+    <div class="todo-item" data-tid="t10" onclick="toggleTodoItem(this, event)">
       <div class="t-check"></div>
       <div class="t-body">
         <div class="t-when">Dom 17 mag sera</div>
