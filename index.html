@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Itinerario e promemoria per un viaggio a Madrid, con programma, opzioni ristoranti e to-do sincronizzati.">
+<meta name="theme-color" content="#182845">
 <title>Madrid 16–18 Maggio</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -316,6 +318,8 @@
     gap: 5px;
     letter-spacing: 0.04em;
     user-select: none;
+    background: transparent;
+    border: none;
   }
 
   .options-toggle svg {
@@ -365,6 +369,18 @@
     font-size: 0.8rem;
     color: var(--muted);
     letter-spacing: 0.06em;
+  }
+  .day-btn:focus-visible,
+  .recap-toggle:focus-visible,
+  .todo-toggle:focus-visible,
+  .theme-toggle:focus-visible,
+  .item:focus-visible,
+  .todo-item:focus-visible,
+  .options-toggle:focus-visible,
+  .acc-header:focus-visible,
+  .recap-close:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
   }
 
   .stats-text span {
@@ -723,16 +739,16 @@
 <header>
   <div class="header-controls">
     <div class="header-controls-left">
-      <button class="recap-toggle" onclick="toggleRecap()">
+      <button class="recap-toggle" id="recap-btn" aria-expanded="false" aria-controls="recap-overlay" onclick="toggleRecap()">
         <span>📋</span>
         <span>Riepilogo</span>
       </button>
-      <button class="todo-toggle" onclick="toggleTodo()">
+      <button class="todo-toggle" id="todo-btn" aria-expanded="false" aria-controls="todo-overlay" onclick="toggleTodo()">
         <span>🗓️</span>
         <span>To-Do</span>
       </button>
     </div>
-    <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">
+    <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn" aria-label="Cambia tema">
       <span class="theme-icon" id="theme-icon">☀️</span>
       <span id="theme-label">Chiaro</span>
     </button>
@@ -1043,7 +1059,7 @@
 
 <div class="stats-bar">
   <div class="stats-text">✓ <span id="done-count">0</span> attività completate</div>
-  <div id="sync-status" style="font-size:0.75rem;color:var(--muted);letter-spacing:0.04em">○ Caricamento…</div>
+  <div id="sync-status" role="status" aria-live="polite" style="font-size:0.75rem;color:var(--muted);letter-spacing:0.04em">○ Caricamento…</div>
   <button class="reset-btn" onclick="resetAll()">Reset</button>
 </div>
 
@@ -1128,8 +1144,9 @@
   function applyState() {
     document.querySelectorAll('.item').forEach(el => {
       const id = el.dataset.id;
-      if (done.includes(id)) el.classList.add('done');
-      else el.classList.remove('done');
+      const checked = done.includes(id);
+      el.classList.toggle('done', checked);
+      el.setAttribute('aria-pressed', String(checked));
     });
     const doneCount = done.filter(id => document.querySelector('[data-id="' + id + '"]')).length;
     document.getElementById('done-count').textContent = doneCount;
@@ -1149,8 +1166,9 @@
   function applyTodoState() {
     document.querySelectorAll('.todo-item').forEach(el => {
       const id = el.dataset.tid;
-      if (todoDone.includes(id)) el.classList.add('done');
-      else el.classList.remove('done');
+      const checked = todoDone.includes(id);
+      el.classList.toggle('done', checked);
+      el.setAttribute('aria-pressed', String(checked));
     });
   }
 
@@ -1169,8 +1187,10 @@
     e.stopPropagation();
     const list = document.getElementById(id);
     const btn = e.currentTarget;
-    list.classList.toggle('open');
-    btn.classList.toggle('open');
+    const open = !list.classList.contains('open');
+    list.classList.toggle('open', open);
+    btn.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
   }
 
   function switchDay(day, btn) {
@@ -1182,19 +1202,31 @@
 
   function toggleAcc(header, bodyId) {
     header.classList.toggle('open');
-    document.getElementById(bodyId).classList.toggle('open');
+    const body = document.getElementById(bodyId);
+    if (!body) return;
+    const open = header.classList.contains('open');
+    body.classList.toggle('open', open);
+    header.setAttribute('aria-expanded', String(open));
+  }
+
+  function setOverlayState(overlayId, buttonId, open) {
+    const overlay = document.getElementById(overlayId);
+    const button = document.getElementById(buttonId);
+    if (!overlay || !button) return;
+    overlay.classList.toggle('open', open);
+    overlay.setAttribute('aria-hidden', String(!open));
+    button.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
   }
 
   function toggleRecap() {
     const overlay = document.getElementById('recap-overlay');
-    overlay.classList.toggle('open');
-    document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
+    setOverlayState('recap-overlay', 'recap-btn', !overlay.classList.contains('open'));
   }
 
   function toggleTodo() {
     const overlay = document.getElementById('todo-overlay');
-    overlay.classList.toggle('open');
-    document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
+    setOverlayState('todo-overlay', 'todo-btn', !overlay.classList.contains('open'));
   }
 
   async function resetAll() {
@@ -1231,6 +1263,50 @@
     document.documentElement.classList.toggle('light', isLight);
     document.getElementById('theme-icon').textContent = isLight ? '🌙' : '☀️';
     document.getElementById('theme-label').textContent = isLight ? 'Scuro' : 'Chiaro';
+    document.getElementById('theme-btn').setAttribute('aria-pressed', String(isLight));
+  }
+
+  function initAccessibility() {
+    document.querySelectorAll('.item, .todo-item, .acc-header, .options-toggle').forEach(el => {
+      if (!el.hasAttribute('role')) el.setAttribute('role', 'button');
+      if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+      if (el.classList.contains('acc-header')) {
+        el.setAttribute('aria-expanded', String(el.classList.contains('open')));
+      }
+      if (el.classList.contains('options-toggle')) {
+        el.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    document.querySelectorAll('.recap-overlay, #todo-overlay').forEach(overlay => {
+      overlay.setAttribute('aria-hidden', String(!overlay.classList.contains('open')));
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        const recap = document.getElementById('recap-overlay');
+        const todo = document.getElementById('todo-overlay');
+        if (recap && recap.classList.contains('open')) toggleRecap();
+        if (todo && todo.classList.contains('open')) toggleTodo();
+      }
+    });
+
+    document.querySelectorAll('.item, .todo-item, .acc-header, .options-toggle').forEach(el => {
+      el.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          if (el.classList.contains('todo-item')) toggleTodoItem(el, event);
+          else if (el.classList.contains('acc-header')) {
+            const bodyId = el.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+            if (bodyId) toggleAcc(el, bodyId);
+          } else if (el.classList.contains('options-toggle')) {
+            const onclick = el.getAttribute('onclick');
+            const match = onclick?.match(/toggleOpts\(event,'([^']+)'\)/);
+            if (match) toggleOpts(event, match[1]);
+          } else toggle(el, event);
+        }
+      });
+    });
   }
 
   function toggleTheme() {
@@ -1243,7 +1319,8 @@
   // ── INIT ─────────────────────────────────────────────────────────
   (function() {
     const saved = store.get(THEME_KEY_STORE);
-    if (saved) applyTheme(saved);
+    applyTheme(saved || 'dark');
+    initAccessibility();
   })();
 
   loadFromSupabase();
