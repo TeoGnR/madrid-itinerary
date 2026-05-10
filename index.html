@@ -7,6 +7,7 @@
 <meta name="theme-color" content="#182845">
 <title>Madrid 16–18 Maggio</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-o9N1j7r1t3m9fT5qLnaM2hsM/g5QxE7iqR6jKUuV+3E=" crossorigin="" />
 <style>
   :root {
     --bg: #182845;
@@ -160,6 +161,33 @@
     color: #182845;
     font-weight: 500;
   }
+
+  .map-panel {
+    margin: 0 auto 24px;
+    max-width: 680px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .map-panel #map {
+    width: 100%;
+    min-height: 320px;
+  }
+  .map-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    font-size: 0.82rem;
+    color: var(--text);
+    background: rgba(24,40,69,0.96);
+    border-top: 1px solid var(--border);
+  }
+  .map-info span { display: inline-flex; align-items: center; gap: 6px; }
+  .map-info .map-label { font-weight: 500; color: var(--gold); }
 
   /* MAIN CONTENT */
   .container {
@@ -370,15 +398,7 @@
     color: var(--muted);
     letter-spacing: 0.06em;
   }
-  .day-btn:focus-visible,
-  .recap-toggle:focus-visible,
-  .todo-toggle:focus-visible,
-  .theme-toggle:focus-visible,
-  .item:focus-visible,
-  .todo-item:focus-visible,
-  .options-toggle:focus-visible,
-  .acc-header:focus-visible,
-  .recap-close:focus-visible {
+  .focus-ring:focus-visible {
     outline: 2px solid var(--gold);
     outline-offset: 3px;
   }
@@ -739,16 +759,16 @@
 <header>
   <div class="header-controls">
     <div class="header-controls-left">
-      <button class="recap-toggle" id="recap-btn" aria-expanded="false" aria-controls="recap-overlay" onclick="toggleRecap()">
+      <button class="recap-toggle" onclick="toggleRecap()">
         <span>📋</span>
         <span>Riepilogo</span>
       </button>
-      <button class="todo-toggle" id="todo-btn" aria-expanded="false" aria-controls="todo-overlay" onclick="toggleTodo()">
+      <button class="todo-toggle" onclick="toggleTodo()">
         <span>🗓️</span>
         <span>To-Do</span>
       </button>
     </div>
-    <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn" aria-label="Cambia tema">
+    <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">
       <span class="theme-icon" id="theme-icon">☀️</span>
       <span id="theme-label">Chiaro</span>
     </button>
@@ -762,6 +782,14 @@
   <button class="day-btn active" onclick="switchDay('sab', this)">Sab 16</button>
   <button class="day-btn" onclick="switchDay('dom', this)">Dom 17</button>
   <button class="day-btn" onclick="switchDay('lun', this)">Lun 18</button>
+</div>
+
+<div class="map-panel" aria-label="Mappa itinerario">
+  <div id="map"></div>
+  <div class="map-info">
+    <span class="map-label" id="map-day-label">Sab 16</span>
+    <span id="map-route-summary">Percorso dall’aeroporto al centro città con tappe consigliate</span>
+  </div>
 </div>
 
 <div class="container">
@@ -1059,7 +1087,7 @@
 
 <div class="stats-bar">
   <div class="stats-text">✓ <span id="done-count">0</span> attività completate</div>
-  <div id="sync-status" role="status" aria-live="polite" style="font-size:0.75rem;color:var(--muted);letter-spacing:0.04em">○ Caricamento…</div>
+  <div id="sync-status" style="font-size:0.75rem;color:var(--muted);letter-spacing:0.04em">○ Caricamento…</div>
   <button class="reset-btn" onclick="resetAll()">Reset</button>
 </div>
 
@@ -1069,6 +1097,94 @@
   const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indqa3BtbGxkandycG10amV6dnN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NzUxNzcsImV4cCI6MjA5MzE1MTE3N30.2_58rgeiNH-dz_6CHf6qBGAC94q82hLqJDQ6S-61AAQ';
   const HEADERS = { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY };
   const THEME_KEY_STORE = 'madrid_theme_v1';
+
+  const mapData = {
+    sab: {
+      label: 'Sab 16',
+      description: 'Aeroporto → alloggio → Puerta del Sol → Plaza Mayor → Mercado → Teatro Kapital',
+      waypoints: [
+        { name: 'Aeroporto Barajas', coords: [40.4689, -3.5608] },
+        { name: 'Alloggio Madrid', coords: [40.4175, -3.7038] },
+        { name: 'Puerta del Sol', coords: [40.4169, -3.7033] },
+        { name: 'Plaza Mayor', coords: [40.4155, -3.7074] },
+        { name: 'Mercado de San Miguel', coords: [40.4156, -3.7078] },
+        { name: 'Teatro Kapital', coords: [40.4137, -3.6995] }
+      ]
+    },
+    dom: {
+      label: 'Dom 17',
+      description: 'Alloggio → brunch → Parque del Retiro → Palacio de Cristal → rooftop',
+      waypoints: [
+        { name: 'Alloggio Madrid', coords: [40.4175, -3.7038] },
+        { name: 'Superchulo Gran Vía', coords: [40.4244, -3.7069] },
+        { name: 'Parque del Retiro', coords: [40.4154, -3.6844] },
+        { name: 'Palacio de Cristal', coords: [40.4148, -3.6842] },
+        { name: 'Azotea del Círculo', coords: [40.4205, -3.7006] }
+      ]
+    },
+    lun: {
+      label: 'Lun 18',
+      description: 'Alloggio → Palacio Real / Bernabéu → Barajas T1',
+      waypoints: [
+        { name: 'Alloggio Madrid', coords: [40.4175, -3.7038] },
+        { name: 'Palacio Real', coords: [40.4179, -3.7143] },
+        { name: 'Estadio Santiago Bernabéu', coords: [40.4531, -3.6883] },
+        { name: 'Aeroporto Barajas T1', coords: [40.4702, -3.5609] }
+      ]
+    }
+  };
+
+  let map;
+  let routeLayer;
+  let markersGroup;
+
+  function initMap() {
+    if (typeof L === 'undefined') return;
+    map = L.map('map', { zoomControl: true }).setView([40.4175, -3.7038], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: 'Mappa © OpenStreetMap contributors'
+    }).addTo(map);
+    markersGroup = L.layerGroup().addTo(map);
+    routeLayer = L.layerGroup().addTo(map);
+    renderMap('sab');
+  }
+
+  function renderMap(day) {
+    const data = mapData[day];
+    if (!data || !map) return;
+    document.getElementById('map-day-label').textContent = data.label;
+    document.getElementById('map-route-summary').textContent = data.description;
+    markersGroup.clearLayers();
+    routeLayer.clearLayers();
+
+    const bounds = [];
+    data.waypoints.forEach((point, index) => {
+      bounds.push(point.coords);
+      const marker = L.marker(point.coords).addTo(markersGroup).bindPopup('<strong>' + point.name + '</strong>');
+      if (index === 0) marker.bindTooltip('Partenza', { permanent: true, direction: 'right', className: 'map-tooltip' });
+      if (index === data.waypoints.length - 1) marker.bindTooltip('Arrivo', { permanent: true, direction: 'right', className: 'map-tooltip' });
+    });
+
+    const coordsString = data.waypoints.map(p => p.coords[1] + ',' + p.coords[0]).join(';');
+    const url = 'https://router.project-osrm.org/route/v1/driving/' + coordsString + '?overview=full&geometries=geojson';
+
+    fetch(url).then(res => res.json()).then(json => {
+      if (!json.routes || json.code !== 'Ok') throw new Error();
+      const route = json.routes[0];
+      const line = L.geoJSON(route.geometry, {
+        style: { color: '#c9a84c', weight: 4, opacity: 0.9 }
+      }).addTo(routeLayer);
+      const distance = (route.distance / 1000).toFixed(1);
+      const duration = Math.round(route.duration / 60);
+      document.getElementById('map-route-summary').textContent = data.description + ' · ' + distance + ' km · ' + duration + ' min';
+      const group = L.featureGroup([line, ...markersGroup.getLayers()]);
+      map.fitBounds(group.getBounds(), { padding: [24, 24] });
+    }).catch(() => {
+      const line = L.polyline(data.waypoints, { color: '#c9a84c', weight: 4, opacity: 0.9 }).addTo(routeLayer);
+      const group = L.featureGroup([line, ...markersGroup.getLayers()]);
+      map.fitBounds(group.getBounds(), { padding: [24, 24] });
+    });
+  }
 
   // Safe localStorage wrapper
   const store = (function() {
@@ -1144,9 +1260,8 @@
   function applyState() {
     document.querySelectorAll('.item').forEach(el => {
       const id = el.dataset.id;
-      const checked = done.includes(id);
-      el.classList.toggle('done', checked);
-      el.setAttribute('aria-pressed', String(checked));
+      if (done.includes(id)) el.classList.add('done');
+      else el.classList.remove('done');
     });
     const doneCount = done.filter(id => document.querySelector('[data-id="' + id + '"]')).length;
     document.getElementById('done-count').textContent = doneCount;
@@ -1166,9 +1281,8 @@
   function applyTodoState() {
     document.querySelectorAll('.todo-item').forEach(el => {
       const id = el.dataset.tid;
-      const checked = todoDone.includes(id);
-      el.classList.toggle('done', checked);
-      el.setAttribute('aria-pressed', String(checked));
+      if (todoDone.includes(id)) el.classList.add('done');
+      else el.classList.remove('done');
     });
   }
 
@@ -1198,15 +1312,12 @@
     document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('day-' + day).classList.add('active');
     btn.classList.add('active');
+    renderMap(day);
   }
 
   function toggleAcc(header, bodyId) {
     header.classList.toggle('open');
-    const body = document.getElementById(bodyId);
-    if (!body) return;
-    const open = header.classList.contains('open');
-    body.classList.toggle('open', open);
-    header.setAttribute('aria-expanded', String(open));
+    document.getElementById(bodyId).classList.toggle('open');
   }
 
   function setOverlayState(overlayId, buttonId, open) {
@@ -1263,50 +1374,6 @@
     document.documentElement.classList.toggle('light', isLight);
     document.getElementById('theme-icon').textContent = isLight ? '🌙' : '☀️';
     document.getElementById('theme-label').textContent = isLight ? 'Scuro' : 'Chiaro';
-    document.getElementById('theme-btn').setAttribute('aria-pressed', String(isLight));
-  }
-
-  function initAccessibility() {
-    document.querySelectorAll('.item, .todo-item, .acc-header, .options-toggle').forEach(el => {
-      if (!el.hasAttribute('role')) el.setAttribute('role', 'button');
-      if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
-      if (el.classList.contains('acc-header')) {
-        el.setAttribute('aria-expanded', String(el.classList.contains('open')));
-      }
-      if (el.classList.contains('options-toggle')) {
-        el.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    document.querySelectorAll('.recap-overlay, #todo-overlay').forEach(overlay => {
-      overlay.setAttribute('aria-hidden', String(!overlay.classList.contains('open')));
-    });
-
-    document.addEventListener('keydown', event => {
-      if (event.key === 'Escape') {
-        const recap = document.getElementById('recap-overlay');
-        const todo = document.getElementById('todo-overlay');
-        if (recap && recap.classList.contains('open')) toggleRecap();
-        if (todo && todo.classList.contains('open')) toggleTodo();
-      }
-    });
-
-    document.querySelectorAll('.item, .todo-item, .acc-header, .options-toggle').forEach(el => {
-      el.addEventListener('keydown', event => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          if (el.classList.contains('todo-item')) toggleTodoItem(el, event);
-          else if (el.classList.contains('acc-header')) {
-            const bodyId = el.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
-            if (bodyId) toggleAcc(el, bodyId);
-          } else if (el.classList.contains('options-toggle')) {
-            const onclick = el.getAttribute('onclick');
-            const match = onclick?.match(/toggleOpts\(event,'([^']+)'\)/);
-            if (match) toggleOpts(event, match[1]);
-          } else toggle(el, event);
-        }
-      });
-    });
   }
 
   function toggleTheme() {
@@ -1317,14 +1384,14 @@
   }
 
   // ── INIT ─────────────────────────────────────────────────────────
-  (function() {
+  window.addEventListener('load', function() {
     const saved = store.get(THEME_KEY_STORE);
-    applyTheme(saved || 'dark');
-    initAccessibility();
-  })();
-
-  loadFromSupabase();
+    if (saved) applyTheme(saved);
+    initMap();
+    loadFromSupabase();
+  });
 </script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-o9N1j7r1t3m9fT5qLnaM2hsM/g5QxE7iqR6jKUuV+3E=" crossorigin=""></script>
 <!-- OVERLAY RIEPILOGO -->
 <div class="recap-overlay" id="recap-overlay">
   <div class="recap-header">
